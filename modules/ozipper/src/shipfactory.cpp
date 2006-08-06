@@ -15,20 +15,20 @@ ShipFactory * ShipFactory::getInstance()
   return instance;
 }
 
-void ShipFactory::CreateShip(const std::string& name, int metal, int crystal, int deuterium)
+void ShipFactory::CreateShip(const std::string& alias, const std::string& name, int metal, int crystal, int deuterium)
 {
-  std::pair<const std::string, Ship> m_pair(name, Ship(metal, crystal, deuterium));
+  std::pair<const std::string, Ship> m_pair(alias, Ship(name, metal, crystal, deuterium));
   m_ships.insert(m_pair);
 }
 
-const Ship& ShipFactory::GetShip(const std::string& name) throw(Exception)
+const Ship& ShipFactory::GetShip(const std::string& alias) throw(Exception)
 {
   std::map<const std::string, Ship>::iterator i;
 
-  i = m_ships.find(name);
+  i = m_ships.find(alias);
   if (i == m_ships.end())
   {
-    EXCEPTION("Ship \"%s\" not found", name.c_str());
+    EXCEPTION("Ship \"%s\" not found", alias.c_str());
   }
     
   return (*i).second;

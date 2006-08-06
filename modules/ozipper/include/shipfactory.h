@@ -9,8 +9,8 @@
 class ShipFactory
 {
 public:
-  void CreateShip(const std::string& name, int metal, int crystal, int deuterium);
-  const Ship& GetShip(const std::string& name) throw(Exception);
+  void CreateShip(const std::string& alias, const std::string& name, int metal, int crystal, int deuterium);
+  const Ship& GetShip(const std::string& alias) throw(Exception);
 
   static ShipFactory * getInstance();
 

@@ -1,11 +1,11 @@
 #include "ship.h"
 
-Ship::Ship(int p_metal, int p_crystal, int p_deuterium) :
-      metal(p_metal), crystal(p_crystal), deuterium(p_deuterium)
+Ship::Ship(const std::string& p_name, int p_metal, int p_crystal, int p_deuterium) :
+      name(p_name), metal(p_metal), crystal(p_crystal), deuterium(p_deuterium)
 {
 }
 
 Ship::Ship(const Ship &ship) :
-      metal(ship.metal), crystal(ship.crystal), deuterium(ship.deuterium)
+      name(ship.name), metal(ship.metal), crystal(ship.crystal), deuterium(ship.deuterium)
 {
 }

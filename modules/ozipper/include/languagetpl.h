@@ -7,14 +7,15 @@
 class LanguageTemplate
 {
 public:
-  LanguageTemplate(std::string& language);
-  const std::vector<std::string>& Parse(std::string report);
+  LanguageTemplate(const std::string& language);
+  const std::vector<std::string>& Parse(const std::string report);
 
 private:
   void InitShips();
   void InitRegex();
 
   std::string m_language;
+  std::string m_regex;
   std::vector<std::string> m_result;
 };
 
