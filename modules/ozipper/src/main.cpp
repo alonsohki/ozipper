@@ -1,3 +1,4 @@
+#include "exception.h"
 #include "ship.h"
 #include "shipfactory.h"
 #include "xmloutput.h"
