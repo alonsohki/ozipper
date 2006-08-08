@@ -1,2 +1,4 @@
-S.Cargo:Small Cargo:2000 2000 0
-L.Cargo:Large Cargo:6000 6000 0
+S.Cargo:SmallCargo:2000 2000 0
+L.Cargo:LargeCargo:6000 6000 0
+L.Fighter:LightFighter:3000 1000 0
+H.Fighter:HeavyFighter:6000 4000 0

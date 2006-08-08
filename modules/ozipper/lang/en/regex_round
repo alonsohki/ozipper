@@ -4,4 +4,4 @@ Total\s(.*)\r?
 Weapons\s.*\r?
 Shields\s.*\r?
 Armour\s.*\r?)|destroyed)
-\r?
+\s?\r?
