@@ -12,7 +12,7 @@ CXXFLAGS=${CFLAGS}
 
 all: build
 
-OBJS=ship.o shipfactory.o player.o languagetpl.o xmloutput.o main.o
+OBJS=ship.o shipfactory.o player.o languagetpl.o xmloutput.o http.o main.o
 
 clean:
 	${RM} -f *.o
@@ -37,4 +37,5 @@ shipfactory.o:	shipfactory.cpp		../include/ship.h ../include/shipfactory.h
 player.o:	player.cpp		../include/player.h ../include/exception.h
 languagetpl.o:	languagetpl.cpp		../include/languagetpl.h ../include/shipfactory.h ../include/exception.h ../include/player.h
 xmloutput.o:	xmloutput.cpp		../include/xmloutput.h
-main.o:		main.cpp		../include/shipfactory.h ../include/languagetpl.h ../include/exception.h
+http.o:		http.cpp		../include/http.h
+main.o:		main.cpp		../include/languagetpl.h ../include/exception.h ../include/http.h
