@@ -2,10 +2,306 @@
 #include <vector>
 #include <pcre.h>
 #include <fstream>
+#include <sys/stat.h>
+#include "exception.h"
 #include "languagetpl.h"
 #include "shipfactory.h"
 
-LanguageTemplate::LanguageTemplate(const std::string& lang) : m_language(lang)
+int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, bool match_error) throw(Exception)
+{
+  int rc;
+
+  rc = pcre_exec(re,
+                 0,
+		 subject.c_str(),
+		 subject.length(),
+		 offset,
+		 0,
+		 vector,
+		 vsize);
+
+  if (rc < 0)
+  {
+    switch (rc)
+    {
+      case PCRE_ERROR_NOMATCH:
+	if (match_error)
+	{
+	  EXCEPTION("pcre_exec error: String didn't match");
+	}
+	break;
+
+      default:
+	EXCEPTION("pcre_exec error: Error while matching: %d\n", rc);
+	break;
+    }
+  }
+
+  return rc;
+}
+
+static int IntRegex(const char *buffer, size_t length)
+{
+  char tmp[length + 1];
+  memcpy(tmp, buffer, length);
+  tmp[length] = '\0';
+
+  return atoi(tmp);
+}
+
+static inline const char * JumpNull(const char **p)
+{
+  while (**p != '\0' && (**p == '\r' || **p == '\n' || **p == '\t' || **p == '\f'))
+  {
+    *p = *p + 1;
+  }
+
+  return *p;
+}
+static inline const char * FindNull(const char **p)
+{
+  while (**p != '\0' && **p != '\r' && **p != '\n' && **p != '\t' && **p != '\f')
+  {
+    *p = *p + 1;
+  }
+
+  return *p;
+}
+
+static inline void ParseShips(const char *report,
+                              int names_begin,
+		              int names_end,
+                              int count_begin,
+		              int count_end,
+		              std::vector<std::string>& ship_names,
+		              std::vector<unsigned int>& ship_counts)
+{
+  const char *p = report + names_begin;
+  const char *p2;
+  std::string ship_name;
+
+  for (p = report + names_begin; JumpNull(&p) <= report + names_end; p++)
+  {
+    p2 = p;
+    if (FindNull(&p2) > report + names_end)
+    {
+      p2 = report + names_end;
+    }
+
+    ship_names.push_back(std::string().append(p, p2 - p));
+    p = p2;
+  }
+
+  for (p = report + count_begin; JumpNull(&p) <= report + count_end; p++)
+  {
+    p2 = p;
+    if (FindNull(&p2) > report + count_end)
+    {
+      p2 = report + count_end;
+    }
+
+    ship_counts.push_back(IntRegex(p, p2 - p));
+    p = p2;
+  }
+}
+
+const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Exception)
+{
+  int rc;
+  static int ovector[64];
+  int last_end;
+
+  /* Obtenemos la fecha */
+  rc = ExecRegex(m_re_date, report, 0, ovector, 64);
+  m_result.date.tm_mon  = IntRegex(report.c_str() + ovector[2],  ovector[3] - ovector[2]);
+  m_result.date.tm_mday = IntRegex(report.c_str() + ovector[4],  ovector[5] - ovector[4]);
+  m_result.date.tm_hour = IntRegex(report.c_str() + ovector[6],  ovector[7] - ovector[6]);
+  m_result.date.tm_min  = IntRegex(report.c_str() + ovector[8],  ovector[9] - ovector[8]);
+  m_result.date.tm_sec  = IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]);
+  last_end = ovector[1];
+
+  /* Obtenemos la presentación de las flotas */
+  do
+  {
+    rc = ExecRegex(m_re_fleets, report, last_end, ovector, 64, false);
+
+    if (rc > 0)
+    {
+      int x;
+
+      last_end = ovector[1];
+      
+      /* Extraemos los datos del jugador */
+      Player * player = (Player *)&Player::GetPlayer(
+            std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]), /* name */
+	    std::string().append(report.c_str() + ovector[4], ovector[5] - ovector[4]), /* role */
+	    std::string().append(report.c_str() + ovector[8], ovector[9] - ovector[8]), /* coords */
+	    IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]),		/* weapons */
+	    IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* shield */
+	    IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]),		/* armour */
+	    true);
+      m_result.players.push_back(player);
+
+      /* Si no tiene flota ni defensa, rc == 9 */
+      if (rc > 9)
+      {
+	std::vector<std::string> ship_names;
+	std::vector<unsigned int> ship_counts;
+	
+        ParseShips(report.c_str(), ovector[20], ovector[21], ovector[22], ovector[23], ship_names, ship_counts);
+        x = 0;
+        for (std::vector<std::string>::const_iterator i = ship_names.begin(); i != ship_names.end(); i++)
+        {
+	  player->CreateShip(*i, ship_counts[x], 0);
+	  x++;
+        }
+      }
+    }
+  } while (rc > 0);
+
+  /* Buscamos la última ronda */
+  m_result.rounds = 0;
+  do
+  {
+    rc = ExecRegex(m_re_startround, report, last_end, ovector, 64, false);
+
+    if (rc > 0)
+    {
+      last_end = ovector[1];
+      m_result.rounds++;
+    }
+  } while (rc > 0);
+
+  do
+  {
+    rc = ExecRegex(m_re_round, report, last_end, ovector, 64, false);
+
+    if (rc > 0)
+    {
+      last_end = ovector[1];
+      if (rc > 5)
+      {
+        int x;
+        std::vector<std::string> ship_names;
+        std::vector<unsigned int> ship_counts;
+
+        Player * player = (Player *)&Player::GetPlayer(
+	      std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]),  /* name */
+	      std::string().append(report.c_str() + ovector[4], ovector[5] - ovector[4])); /* role */
+
+        ParseShips(report.c_str(), ovector[12], ovector[13], ovector[14], ovector[15], ship_names, ship_counts);
+        x = 0;
+        for (std::vector<std::string>::const_iterator i = ship_names.begin(); i != ship_names.end(); i++)
+        {
+	  player->CreateShip(*i, ship_counts[x], 1);
+	  x++;
+        }
+      }
+    }
+  } while (rc > 0);
+
+  /* Resultado de la batalla */
+  rc = ExecRegex(m_re_result, report, last_end, ovector, 64);
+
+  if (rc > 0)
+  {
+    last_end = ovector[1];
+    m_result.winner.append(report.c_str() + ovector[6], ovector[7] - ovector[6]);
+    m_result.captures.metal     = IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]);
+    m_result.captures.crystal   = IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]);
+    m_result.captures.deuterium = IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]);
+    m_result.losses.attacker    = IntRegex(report.c_str() + ovector[18], ovector[19] - ovector[18]);
+    m_result.losses.defender    = IntRegex(report.c_str() + ovector[20], ovector[21] - ovector[20]);
+    m_result.debris.metal       = IntRegex(report.c_str() + ovector[22], ovector[23] - ovector[22]);
+    m_result.debris.crystal     = IntRegex(report.c_str() + ovector[24], ovector[25] - ovector[24]);
+  }
+
+  /* Verificamos si hay luna */
+  rc = ExecRegex(m_re_moon, report, last_end, ovector, 64, false);
+
+  if (rc > 0)
+  {
+    m_result.moonchance = IntRegex(report.c_str() + ovector[4], ovector[5] - ovector[4]);
+    if (rc > 3)
+    {
+      m_result.moon = true;
+    }
+    else
+    {
+      m_result.moon = false;
+    }
+  }
+  else
+  {
+    m_result.moon = false;
+    m_result.moonchance = 0;
+  }
+
+  printf("Batalla de %d rondas\n", m_result.rounds);
+  printf("-------------------\n\n");
+
+  for (std::vector<Player *>::const_iterator i = m_result.players.begin(); i != m_result.players.end(); i++)
+  {
+    Player * player = *i;
+    printf("%s %s [%s]\n", player->GetRole().c_str(), player->GetName().c_str(), player->GetCoords().c_str());
+    printf("Weapons: %d%% Shield: %d%% Armour: %d%%\n", player->GetWeapons(), player->GetShield(), player->GetArmour());
+
+    for (std::map<const std::string, unsigned int>::const_iterator x = player->GetShips(0).begin(); x != player->GetShips(0).end(); x++)
+    {
+      try
+      {
+        printf(" `- %s (%d -> %d)\n", (*x).first.c_str(), (*x).second, player->GetShipCount((*x).first, 1));
+      }
+      catch (Exception &)
+      {
+	printf(" `- %s (%d -> 0)\n", (*x).first.c_str(), (*x).second);
+      }
+    }
+    puts("");
+  }
+  printf("%d%% de luna, creada?=%d\n\n", m_result.moonchance, m_result.moon);
+
+  printf("Ganador: %s\n", m_result.winner.c_str());
+  printf("Captura: %d metal %d cristal %d deuterio\n", m_result.captures.metal, m_result.captures.crystal, m_result.captures.deuterium);
+  printf("Pérdidas atacante: %d\n", m_result.losses.attacker);
+  printf("Pérdidas defensor: %d\n", m_result.losses.defender);
+  printf("Escombros: %d metal %d cristal\n", m_result.debris.metal, m_result.debris.crystal);
+
+  return m_result;
+}
+
+LanguageTemplate::~LanguageTemplate()
+{
+  if (m_re_date)
+  {
+    free(m_re_date);
+  }
+  if (m_re_fleets)
+  {
+    free(m_re_fleets);
+  }
+  if (m_re_startround)
+  {
+    free(m_re_startround);
+  }
+  if (m_re_round)
+  {
+    free(m_re_round);
+  }
+  if (m_re_result)
+  {
+    free(m_re_result);
+  }
+  if (m_re_moon)
+  {
+    free(m_re_moon);
+  }
+}
+
+LanguageTemplate::LanguageTemplate(const std::string& lang) throw(Exception) :
+                                   m_re_date(0), m_re_fleets(0), m_re_startround(0),
+				   m_re_round(0), m_re_result(0), m_re_moon(0),
+				   m_language(lang)
 {
   InitShips();
   InitRegex();
@@ -29,7 +325,7 @@ void LanguageTemplate::InitShips()
 
   while (!file.eof())
   {
-    file.getline(line, 2048);
+    file.getline(line, 512);
     if (file.eof())
     {
       break;
@@ -55,24 +351,47 @@ void LanguageTemplate::InitShips()
   file.close();
 }
 
-void LanguageTemplate::InitRegex()
+void LanguageTemplate::ReadRegex(const std::string& path, std::string& dest, pcre **re) throw (Exception)
 {
   std::ifstream file;
-  std::string path("lang/" + m_language + "/regex");
-  char tmp[512];
-  size_t bytes;
+  char *tmp;
+  const char *error;
+  int erroffset;
+  struct stat estado;
 
+  stat(path.c_str(), &estado);
   file.open(path.c_str());
-
-  do
+  if (!file.is_open())
   {
-    bytes = file.readsome(tmp, 512);
-    tmp[bytes] = '\0';
-    m_regex += tmp;
-  } while (bytes);
+    EXCEPTION("Can't open file %s", path.c_str());
+  }
+
+  tmp = new char[estado.st_size + 1];
+  file.read(tmp, estado.st_size);
+  tmp[estado.st_size] = '\0';
+  dest = tmp;
+  delete[] tmp;
 
   file.close();
 
-  printf("Regex: %s", m_regex.c_str());
+  *re = pcre_compile(dest.c_str(),
+                     0,
+		     &error,
+		     &erroffset,
+		     0);
+
+  if (!*re)
+  {
+    EXCEPTION("pcre_compile failed (offset: %d), %s\n", erroffset, error);
+  }
 }
 
+void LanguageTemplate::InitRegex() throw (Exception)
+{
+  ReadRegex("lang/" + m_language + "/regex_date", m_re_date_str, &m_re_date);
+  ReadRegex("lang/" + m_language + "/regex_fleets", m_re_fleets_str, &m_re_fleets);
+  ReadRegex("lang/" + m_language + "/regex_startround", m_re_startround_str, &m_re_startround);
+  ReadRegex("lang/" + m_language + "/regex_round", m_re_round_str, &m_re_round);
+  ReadRegex("lang/" + m_language + "/regex_result", m_re_result_str, &m_re_result);
+  ReadRegex("lang/" + m_language + "/regex_moon", m_re_moon_str, &m_re_moon);
+}

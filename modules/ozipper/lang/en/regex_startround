@@ -1,0 +1,2 @@
+([\s\r\n]*)*The attacking fleet fires \d+ times with a total firepower of \d+ at the defender. The defender's shields absorb \d+ damage\r?
+In total, the defending fleet fires \d+ times with a total firepower of \d+ at the attacker. The attacker's shields absorb \d+ damage\r?
