@@ -25,3 +25,7 @@
 * 08/08/2006 - ryden@bhats.org
   ----------------------------
   Creada la clase Http
+
+* 09/08/2006 - ryden@bhats.org
+  ----------------------------
+  Bugfix en exception.h

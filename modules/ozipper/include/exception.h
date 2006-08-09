@@ -1,6 +1,8 @@
 #ifndef __EXCEPTION_H
 #define __EXCEPTION_H
 
+#include <string>
+
 class Exception
 {
 public:
@@ -11,12 +13,12 @@ public:
 
   const char *GetFile() { return m_file; }
   int GetLine() { return m_line; }
-  const char *GetErr() { return m_errstr; }
+  const char *GetErr() { return m_errstr.c_str(); }
 
 private:
   const char *m_file;
   int m_line;
-  const char *m_errstr;
+  std::string m_errstr;
 };
 
 #define EXCEPTION(...) { \
