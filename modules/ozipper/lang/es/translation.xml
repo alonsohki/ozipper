@@ -1,6 +1,6 @@
   <translation>
-    <ship id="SCargo">Nave pequeña de carga</ship>
-    <ship id="LCargo">Nave grande de carga</ship>
+    <ship id="SCargo">Pequeña de carga</ship>
+    <ship id="LCargo">Grande de carga</ship>
     <ship id="LFighter">Cazador ligero</ship>
     <ship id="HFighter">Cazador pesado</ship>
     <ship id="Cruiser">Crucero</ship>
@@ -21,12 +21,33 @@
     <ship id="SDome">Cúpula pequeña</ship>
     <ship id="LDome">Cúpula grande</ship>
 
+    <months>
+      <month id="0">Enero</month>
+      <month id="1">Febrero</month>
+      <month id="2">Marzo</month>
+      <month id="3">Abril</month>
+      <month id="4">Mayo</month>
+      <month id="5">Junio</month>
+      <month id="6">Julio</month>
+      <month id="7">Agosto</month>
+      <month id="8">Septiembre</month>
+      <month id="9">Octubre</month>
+      <month id="10">Noviembre</month>
+      <month id="11">Diciembre</month>
+    </months>
+
     <string id="battleofday">Batalla del día</string>
+    <string id="of">de</string>
+    <string id="at">a las</string>
+    <string id="brounds">La batalla duró</string>
+    <string id="rounds">rondas</string>
+    <string id="round">ronda</string>
     <string id="attackers">Atacantes</string>
     <string id="defenders">Defensores</string>
     <string id="weapons">Armas</string>
     <string id="shields">Escudos</string>
     <string id="armour">Blindaje</string>
+    <string id="noships">Sin naves ni defensa</string>
     <string id="lost">Perdió</string>
     <string id="losses">Pérdidas</string>
     <string id="winner_attacker">¡El atacante ha ganado la batalla!</string>
@@ -45,5 +66,8 @@
     <string id="yield">Rentabilidad</string>
     <string id="recycling">reciclando</string>
     <string id="wrecycling">sin reciclar</string>
+    <string id="moonchance">La probabilidad de que una luna surja de los escombros es del</string>
+    <string id="moonhit">Las enormes cantidades de metal y de cristal se atraen y forman lentamente un satélite lunar en la órbita del planeta</string>
+    <string id="spam">Informe de batalla compactado por</string>
   </translation>
 

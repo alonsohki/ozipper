@@ -1,6 +1,1 @@
-([\s\r\n]*)*(The (attacker|defender) has won the battle!|The battle ended in a draw, both fleets withdraw to their home planets\.)\r?(
-He captured\r?
-(\d+) metal, (\d+) crystal, and (\d+) deuterium\r?)?\r?
-([\s\r\n]*)*The attacker lost a total of (\d+) units\.\r?
-The defender lost a total of (\d+) units\.\r?
-At these space coordinates now float (\d+) metal and (\d+) crystal\..*
+([\s\r\n]*)*(The (attacker|defender) has won the battle!|The battle ended in a draw, both fleets withdraw to their home planets\.)([\s\r\n]*)*(He captured([\s\r\n]*)*(\d+) metal, (\d+) crystal, and (\d+) deuterium)?([\s\r\n]*)*The attacker lost a total of (\d+) units\.([\s\r\n]*)*The defender lost a total of (\d+) units\.([\s\r\n]*)*At these space coordinates now float (\d+) metal and (\d+) crystal\..*

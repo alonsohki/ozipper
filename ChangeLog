@@ -33,3 +33,15 @@
 * 14/08/2006 - ryden@bhats.org
   ----------------------------
   Implementado el generador XML
+
+* 14/08/2006 - ryden@bhats.org
+  ----------------------------
+  Implementados los parsers XML y XSL.
+
+* 14/08/2006 - ryden@bhats.org
+  ----------------------------
+  Implementadas las plantillas de forma y decoración.
+
+* 14/08/2006 - ryden@bhats.org
+  ----------------------------
+  Adaptado el código fuente web.

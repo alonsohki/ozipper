@@ -1,0 +1,174 @@
+body {
+  background-color: #F0F1F7;
+}
+
+#content table {
+  width: 100%;
+}
+
+#content #informetd {
+  width: 50%;
+}
+
+#content #informetd span {
+  font-family: Verdana;
+  font-size: 12px;
+  font-style: italic;
+}
+
+#content #informetd textarea {
+  border: 1px solid #7F9DB9;
+  width: 98%;
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+#content #compactadotd {
+  width: 50%;
+  vertical-align: middle;
+}
+
+#content #compactadotd span {
+  font-family: Verdana;
+  font-size: 12px;
+  font-style: italic;
+}
+
+#content #compactadotd textarea {
+  border: 1px solid #7F9DB9;
+  width: 98%;
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+#content #informe {
+  width: 100%;
+  height: 300px;
+}
+
+#content #compactado {
+  width: 100%;
+  height: 300px;
+}
+
+.wysiwyg_dark {
+  width: 98%;
+  color: #7B90B8;
+  border: 2px solid #000000;
+  padding: 10px;
+  background-color: #1F273C;
+  margin-top: 4px;
+}
+
+.wysiwyg_light {
+  width: 98%;
+  color: #000000;
+  border: 1px solid #222222;
+  padding: 10px;
+  background-color: #EFEFEF;
+  margin-top: 4px;
+}
+
+#options table {
+  width: 320px;
+  border: 1px solid #115786;
+  border-collapse: collapse;
+}
+
+#options #desc {
+  width: 50%;
+  text-align: right;
+  background-color: #AACCEE;
+}
+
+#options #desc span {
+  font-family: Verdana;
+  font-weight: bold;
+  font-size: 11px;
+  margin-right: 4px;
+}
+
+#options #content {
+  width: 50%;
+  text-align: left;
+  background-color: #AACCEE;
+  padding: 1px;
+}
+
+#options #content select {
+  width: 100%;
+  text-align: center;
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+#options #title {
+  text-align: center;
+  background-color: #6688AA;
+  border-bottom: 1px solid #1F273C;
+}
+
+#options #title span {
+  font-family: Verdana;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#preview {
+  margin-top: 20px;
+}
+
+#preview #desc {
+  font-family: Verdana;
+  font-size: 12px;
+  font-style: italic;
+}
+
+#langselect table {
+  width: 25%;
+  border: 1px solid #1F273C;
+  border-collapse: collapse;
+  margin-left: 37%;
+  margin-right: 38%;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+#langselect #desc {
+  width: 50%;
+  text-align: right;
+  background-color: #AACCEE;
+}
+
+#langselect #desc span {
+  font-family: Verdana;
+  font-weight: bold;
+  font-size: 11px;
+  margin-right: 4px;
+}
+
+#langselect #content {
+  width: 50%;
+  text-align: left;
+  background-color: #AACCEE;
+}
+
+#langselect #content select {
+  width: 100%;
+  font-family: Verdana;
+  text-align: center;
+  font-size: 12px;
+}
+
+#langselect #title {
+  width: 100%;
+  text-align: center;
+  background-color: #88AACC;
+  border-bottom: 1px solid #1F273C;
+}
+
+#langselect #title span {
+  font-family: Verdana;
+  font-weight: bold;
+  font-size: 14px;
+}

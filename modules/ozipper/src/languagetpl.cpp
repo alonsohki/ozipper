@@ -51,7 +51,7 @@ static int IntRegex(const char *buffer, size_t length)
 
 static inline const char * JumpNull(const char **p)
 {
-  while (**p != '\0' && (**p == '\r' || **p == '\n' || **p == '\t' || **p == '\f'))
+  while (**p != '\0' && (**p == '\r' || **p == '\n' || **p == '\t' || **p == '\f' || **p == ' '))
   {
     *p = *p + 1;
   }
@@ -60,12 +60,29 @@ static inline const char * JumpNull(const char **p)
 }
 static inline const char * FindNull(const char **p)
 {
-  while (**p != '\0' && **p != '\r' && **p != '\n' && **p != '\t' && **p != '\f')
+  while (**p != '\0' && **p != '\r' && **p != '\n' && **p != '\t' && **p != '\f' && **p != ' ')
   {
     *p = *p + 1;
   }
 
   return *p;
+}
+
+static inline bool AppendShip(const char *a, const char *b, std::vector<std::string>& ship_names)
+{
+  std::string name;
+  name.append(a, b - a);
+
+  try
+  {
+    ShipFactory::getInstance()->GetShip(name);
+    ship_names.push_back(name);
+    return true;
+  }
+  catch (Exception &e)
+  {
+    return false;
+  }
 }
 
 static inline void ParseShips(const char *report,
@@ -78,17 +95,23 @@ static inline void ParseShips(const char *report,
 {
   const char *p = report + names_begin;
   const char *p2;
-  std::string ship_name;
 
   for (p = report + names_begin; JumpNull(&p) <= report + names_end; p++)
   {
     p2 = p;
-    if (FindNull(&p2) > report + names_end)
+    do
     {
-      p2 = report + names_end;
-    }
+      if (FindNull(&p2) > report + names_end)
+      {
+        p2 = report + names_end;
+      }
+      if (AppendShip(p, p2, ship_names))
+      {
+        break;;
+      }
+      p2++;
+    } while (p2 < (report + names_end));
 
-    ship_names.push_back(std::string().append(p, p2 - p));
     p = p2;
   }
 
@@ -130,7 +153,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
       int x;
 
       last_end = ovector[1];
-      
+
       /* Extraemos los datos del jugador */
       std::string role;
       role.append(report.c_str() + ovector[4], ovector[5] - ovector[4]);
@@ -139,9 +162,9 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
             std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]), /* name */
 	    role == m_roles[0] ? "attacker" : "defender",                               /* role */
 	    std::string().append(report.c_str() + ovector[8], ovector[9] - ovector[8]), /* coords */
-	    IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]),		/* weapons */
-	    IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* shield */
-	    IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]),		/* armour */
+	    IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* weapons */
+	    IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]),		/* shield */
+	    IntRegex(report.c_str() + ovector[16], ovector[17] - ovector[16]),		/* armour */
 	    true);
       m_result.players.push_back(player);
 
@@ -151,7 +174,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
 	std::vector<std::string> ship_names;
 	std::vector<unsigned int> ship_counts;
 	
-        ParseShips(report.c_str(), ovector[20], ovector[21], ovector[22], ovector[23], ship_names, ship_counts);
+        ParseShips(report.c_str(), ovector[24], ovector[25], ovector[28], ovector[29], ship_names, ship_counts);
         x = 0;
         for (std::vector<std::string>::const_iterator i = ship_names.begin(); i != ship_names.end(); i++)
         {
@@ -194,7 +217,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
 	      std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]),  /* name */
 	      role == m_roles[0] ? "attacker" : "defender"); /* role */
 
-        ParseShips(report.c_str(), ovector[12], ovector[13], ovector[14], ovector[15], ship_names, ship_counts);
+        ParseShips(report.c_str(), ovector[14], ovector[15], ovector[18], ovector[19], ship_names, ship_counts);
         x = 0;
         for (std::vector<std::string>::const_iterator i = ship_names.begin(); i != ship_names.end(); i++)
         {
@@ -214,14 +237,21 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
     std::string winner;
     winner.append(report.c_str() + ovector[6], ovector[7] - ovector[6]);
     
-    m_result.winner = ((strcasecmp(winner.c_str(), m_roles[0].c_str())) ? "defender" : "attacker");
-    m_result.captures.metal     = IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]);
-    m_result.captures.crystal   = IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]);
-    m_result.captures.deuterium = IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]);
-    m_result.losses.attacker    = IntRegex(report.c_str() + ovector[18], ovector[19] - ovector[18]);
-    m_result.losses.defender    = IntRegex(report.c_str() + ovector[20], ovector[21] - ovector[20]);
-    m_result.debris.metal       = IntRegex(report.c_str() + ovector[22], ovector[23] - ovector[22]);
-    m_result.debris.crystal     = IntRegex(report.c_str() + ovector[24], ovector[25] - ovector[24]);
+    if (winner != "")
+    {
+      m_result.winner = ((strcasecmp(winner.c_str(), m_roles[0].c_str())) ? "defender" : "attacker");
+    }
+    else
+    {
+      m_result.winner = "nobody";
+    }
+    m_result.captures.metal     = IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]);
+    m_result.captures.crystal   = IntRegex(report.c_str() + ovector[16], ovector[17] - ovector[16]);
+    m_result.captures.deuterium = IntRegex(report.c_str() + ovector[18], ovector[19] - ovector[18]);
+    m_result.losses.attacker    = IntRegex(report.c_str() + ovector[22], ovector[23] - ovector[22]);
+    m_result.losses.defender    = IntRegex(report.c_str() + ovector[26], ovector[27] - ovector[26]);
+    m_result.debris.metal       = IntRegex(report.c_str() + ovector[30], ovector[31] - ovector[30]);
+    m_result.debris.crystal     = IntRegex(report.c_str() + ovector[32], ovector[33] - ovector[32]);
   }
 
   /* Verificamos si hay luna */
@@ -230,7 +260,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   if (rc > 0)
   {
     m_result.moonchance = IntRegex(report.c_str() + ovector[4], ovector[5] - ovector[4]);
-    if (rc > 3)
+    if (rc > 4)
     {
       m_result.moon = true;
     }

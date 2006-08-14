@@ -23,15 +23,16 @@ void ShipFactory::CreateShip(const std::string& alias, const std::string& name, 
 
 const Ship& ShipFactory::GetShip(const std::string& alias) throw(Exception)
 {
-  std::map<const std::string, Ship>::iterator i;
-
-  i = m_ships.find(alias);
-  if (i == m_ships.end())
+  for (std::map<const std::string, Ship>::const_reverse_iterator s = GetShips().rbegin();
+       s != GetShips().rend();
+       s++)
   {
-    EXCEPTION("Ship \"%s\" not found", alias.c_str());
+    if (!strcasecmp((*s).first.c_str(), alias.c_str()))
+    {
+      return (*s).second;
+    }
   }
-    
-  return (*i).second;
+  EXCEPTION("Ship \"%s\" not found", alias.c_str());
 }
 
 const std::map<const std::string, Ship, ShipFactoryOrder>& ShipFactory::GetShips()
@@ -42,9 +43,4 @@ const std::map<const std::string, Ship, ShipFactoryOrder>& ShipFactory::GetShips
 bool ShipFactoryOrder::operator()(const std::string& a, const std::string& b)
 {
   return strcasecmp(a.c_str(), b.c_str()) != 0;
-}
-
-bool ShipFactoryOrder::less(const std::string& a, const std::string& b)
-{
-  return false;
 }

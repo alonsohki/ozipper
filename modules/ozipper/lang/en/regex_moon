@@ -1,2 +1,1 @@
-([\s\r\n]*)*The chance for a moon to be created is (\d{1,2}) %\s?\r?(
-The enormous amounts of free metal and crystal draw together and form a moon around the planet\.\s?\r?)?
+([\r\n\s]*)*The chance for a moon to be created is (\d{1,2}) %.*([\r\n\s]*)*(The enormous amounts of free metal and crystal draw together and form a moon around the planet\.)?.*

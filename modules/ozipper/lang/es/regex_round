@@ -1,7 +1,1 @@
-([\s\r\n]*)*(Atacante|Defensor) (.*) \([1-9]:\d{1,3}:\d{1,3}\)\r?
-((Tipo\s(.*)\r?
-Cantidad\s(.*)\r?
-Armas:\s.*\r?
-Escudos\s.*\r?
-Casco\s.*\r?)|Destruído)
-\s?\r?
+([\s\r\n]*)*(Atacante|Defensor) (.*) \([1-9]:\d{1,3}:\d{1,3}\)([\s\r\n]*)*((Tipo\s+(.*)([\s\r\n]*)*Cantidad\s+(.*)([\s\r\n]*)*Armas:\s+.*([\s\r\n]*)*Escudos\s+.*([\s\r\n]*)*Casco\s+.*([\s\r\n]*)*)|Destruído)([\s\r\n]*)*

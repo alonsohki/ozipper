@@ -1,7 +1,1 @@
-([\s\r\n]*)*(Attacker|Defender) (.*) \([1-9]:\d{1,3}:\d{1,3}\)\r?
-((Type\s(.*)\r?
-Total\s(.*)\r?
-Weapons\s.*\r?
-Shields\s.*\r?
-Armour\s.*\r?)|destroyed)
-\s?\r?
+([\s\r\n]*)*(Attacker|Defender) (.*) \([1-9]:\d{1,3}:\d{1,3}\)([\s\r\n]*)*((Type\s+(.*)([\s\r\n]*)*Total\s+(.*)([\s\r\n]*)*Weapons\s+.*([\s\r\n]*)*Shields\s+.*([\s\r\n]*)*Armour\s+.*([\s\r\n]*)*)|destroyed)([\s\r\n]*)*
