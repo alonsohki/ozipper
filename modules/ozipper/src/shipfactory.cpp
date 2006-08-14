@@ -33,3 +33,18 @@ const Ship& ShipFactory::GetShip(const std::string& alias) throw(Exception)
     
   return (*i).second;
 }
+
+const std::map<const std::string, Ship, ShipFactoryOrder>& ShipFactory::GetShips()
+{
+  return m_ships;
+}
+
+bool ShipFactoryOrder::operator()(const std::string& a, const std::string& b)
+{
+  return strcasecmp(a.c_str(), b.c_str()) != 0;
+}
+
+bool ShipFactoryOrder::less(const std::string& a, const std::string& b)
+{
+  return false;
+}

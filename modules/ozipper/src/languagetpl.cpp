@@ -113,7 +113,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
 
   /* Obtenemos la fecha */
   rc = ExecRegex(m_re_date, report, 0, ovector, 64);
-  m_result.date.tm_mon  = IntRegex(report.c_str() + ovector[2],  ovector[3] - ovector[2]);
+  m_result.date.tm_mon  = IntRegex(report.c_str() + ovector[2],  ovector[3] - ovector[2]) - 1;
   m_result.date.tm_mday = IntRegex(report.c_str() + ovector[4],  ovector[5] - ovector[4]);
   m_result.date.tm_hour = IntRegex(report.c_str() + ovector[6],  ovector[7] - ovector[6]);
   m_result.date.tm_min  = IntRegex(report.c_str() + ovector[8],  ovector[9] - ovector[8]);
@@ -132,9 +132,12 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
       last_end = ovector[1];
       
       /* Extraemos los datos del jugador */
+      std::string role;
+      role.append(report.c_str() + ovector[4], ovector[5] - ovector[4]);
+      
       Player * player = (Player *)&Player::GetPlayer(
             std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]), /* name */
-	    std::string().append(report.c_str() + ovector[4], ovector[5] - ovector[4]), /* role */
+	    role == m_roles[0] ? "attacker" : "defender",                               /* role */
 	    std::string().append(report.c_str() + ovector[8], ovector[9] - ovector[8]), /* coords */
 	    IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]),		/* weapons */
 	    IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* shield */
@@ -184,10 +187,12 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
         int x;
         std::vector<std::string> ship_names;
         std::vector<unsigned int> ship_counts;
+	std::string role;
+	role.append(report.c_str() + ovector[4], ovector[5] - ovector[4]);
 
         Player * player = (Player *)&Player::GetPlayer(
 	      std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]),  /* name */
-	      std::string().append(report.c_str() + ovector[4], ovector[5] - ovector[4])); /* role */
+	      role == m_roles[0] ? "attacker" : "defender"); /* role */
 
         ParseShips(report.c_str(), ovector[12], ovector[13], ovector[14], ovector[15], ship_names, ship_counts);
         x = 0;
@@ -206,7 +211,10 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   if (rc > 0)
   {
     last_end = ovector[1];
-    m_result.winner.append(report.c_str() + ovector[6], ovector[7] - ovector[6]);
+    std::string winner;
+    winner.append(report.c_str() + ovector[6], ovector[7] - ovector[6]);
+    
+    m_result.winner = ((strcasecmp(winner.c_str(), m_roles[0].c_str())) ? "defender" : "attacker");
     m_result.captures.metal     = IntRegex(report.c_str() + ovector[10], ovector[11] - ovector[10]);
     m_result.captures.crystal   = IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]);
     m_result.captures.deuterium = IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]);
@@ -236,36 +244,6 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
     m_result.moon = false;
     m_result.moonchance = 0;
   }
-
-  printf("Batalla de %d rondas\n", m_result.rounds);
-  printf("-------------------\n\n");
-
-  for (std::vector<Player *>::const_iterator i = m_result.players.begin(); i != m_result.players.end(); i++)
-  {
-    Player * player = *i;
-    printf("%s %s [%s]\n", player->GetRole().c_str(), player->GetName().c_str(), player->GetCoords().c_str());
-    printf("Weapons: %d%% Shield: %d%% Armour: %d%%\n", player->GetWeapons(), player->GetShield(), player->GetArmour());
-
-    for (std::map<const std::string, unsigned int>::const_iterator x = player->GetShips(0).begin(); x != player->GetShips(0).end(); x++)
-    {
-      try
-      {
-        printf(" `- %s (%d -> %d)\n", (*x).first.c_str(), (*x).second, player->GetShipCount((*x).first, 1));
-      }
-      catch (Exception &)
-      {
-	printf(" `- %s (%d -> 0)\n", (*x).first.c_str(), (*x).second);
-      }
-    }
-    puts("");
-  }
-  printf("%d%% de luna, creada?=%d\n\n", m_result.moonchance, m_result.moon);
-
-  printf("Ganador: %s\n", m_result.winner.c_str());
-  printf("Captura: %d metal %d cristal %d deuterio\n", m_result.captures.metal, m_result.captures.crystal, m_result.captures.deuterium);
-  printf("Pérdidas atacante: %d\n", m_result.losses.attacker);
-  printf("Pérdidas defensor: %d\n", m_result.losses.defender);
-  printf("Escombros: %d metal %d cristal\n", m_result.debris.metal, m_result.debris.crystal);
 
   return m_result;
 }
@@ -303,8 +281,29 @@ LanguageTemplate::LanguageTemplate(const std::string& lang) throw(Exception) :
 				   m_re_round(0), m_re_result(0), m_re_moon(0),
 				   m_language(lang)
 {
+  InitRoles();
   InitShips();
   InitRegex();
+}
+
+void LanguageTemplate::InitRoles()
+{
+  std::ifstream file;
+  std::string path("lang/" + m_language + "/roles");
+  static char line[512];
+
+  file.open(path.c_str());
+  if (!file.good())
+  {
+    EXCEPTION("Can't open file %s", path.c_str());
+  }
+
+  file.getline(line, 512);
+  m_roles[0] = line;
+  file.getline(line, 512);
+  m_roles[1] = line;
+
+  file.close();
 }
 
 void LanguageTemplate::InitShips()
@@ -322,6 +321,10 @@ void LanguageTemplate::InitShips()
   off_t offset;
   
   file.open(path.c_str());
+  if (!file.good())
+  {
+    EXCEPTION("Can't open file %s", path.c_str());
+  }
 
   while (!file.eof())
   {

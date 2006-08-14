@@ -1,0 +1,49 @@
+  <translation>
+    <ship id="SCargo">Nave pequeña de carga</ship>
+    <ship id="LCargo">Nave grande de carga</ship>
+    <ship id="LFighter">Cazador ligero</ship>
+    <ship id="HFighter">Cazador pesado</ship>
+    <ship id="Cruiser">Crucero</ship>
+    <ship id="BShip">Nave de batalla</ship>
+    <ship id="Recycler">Reciclador</ship>
+    <ship id="ColonyShip">Colonizador</ship>
+    <ship id="Probe">Sonda de espionaje</ship>
+    <ship id="Bomber">Bombardero</ship>
+    <ship id="Sat">Satélite solar</ship>
+    <ship id="Destroyer">Destructor</ship>
+    <ship id="RIP">Estrella de la muerte</ship>
+    <ship id="RocketL">Lanzamisiles</ship>
+    <ship id="LLaser">Láser pequeño</ship>
+    <ship id="HLaser">Láser grande</ship>
+    <ship id="Ion">Cañón iónico</ship>
+    <ship id="Gauss">Cañón gauss</ship>
+    <ship id="Plasma">Cañón de plasma</ship>
+    <ship id="SDome">Cúpula pequeña</ship>
+    <ship id="LDome">Cúpula grande</ship>
+
+    <string id="battleofday">Batalla del día</string>
+    <string id="attackers">Atacantes</string>
+    <string id="defenders">Defensores</string>
+    <string id="weapons">Armas</string>
+    <string id="shields">Escudos</string>
+    <string id="armour">Blindaje</string>
+    <string id="lost">Perdió</string>
+    <string id="losses">Pérdidas</string>
+    <string id="winner_attacker">¡El atacante ha ganado la batalla!</string>
+    <string id="winner_defender">¡El defensor ha ganado la batalla!</string>
+    <string id="winner_nobody">El combate termina en empate y ambas flotas regresan a sus planetas de orígen.</string>
+    <string id="captures">Él captura</string>
+    <string id="metal">Metal</string>
+    <string id="crystal">Cristal</string>
+    <string id="deuterium">Deuterio</string>
+    <string id="and">y</string>
+    <string id="attackerfleetlosses">Pérdidas de la flota atacante</string>
+    <string id="defenderfleetlosses">Pérdidas de la flota defensora</string>
+    <string id="totallosses">Pérdidas totales</string>
+    <string id="debris">Escombros</string>
+    <string id="units">unidades</string>
+    <string id="yield">Rentabilidad</string>
+    <string id="recycling">reciclando</string>
+    <string id="wrecycling">sin reciclar</string>
+  </translation>
+

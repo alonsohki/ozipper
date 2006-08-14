@@ -1,4 +1,21 @@
-P.Carga:Nave pequeña de carga:2000 2000 0
-Gr.Carga:Nave grande de carga:6000 6000 0
-Cazador L.:Cazador ligero:3000 1000 0
-Cazador P.:Cazador pesado:6000 4000 0
+P.Carga:SCargo:2000 2000 0
+Gr.Carga:LCargo:6000 6000 0
+Cazador L.:LFighter:3000 1000 0
+Cazador P.:HFighter:6000 4000 0
+Crucero:Cruiser:20000 7000 2000
+Nave de Batalla:BShip:40000 20000 0
+Reciclador.:Recycler:10000 6000 2000
+Colonizador:ColonyShip:10000 20000 10000
+Sonda:Probe:0 1000 0
+Bombardero:Bomber:50000 25000 15000
+Satélite S.:Sat:0 2000 500
+Destructor:Destroyer:60000 50000 15000
+Est.Muerte:RIP:5000000 4000000 1000000
+Misil:RocketL:2000 0 0
+Láser Peq.:LLaser:1500 500 0
+Láser Gr.:HLaser:6000 2000 0
+C.Iónico:Ion:2000 6000 0
+C.Gauss:Gauss:20000 15000 2000
+C.Plasma:Plasma:50000 50000 30000
+Cúpula Peq.:SDome:10000 10000 0
+Cúpula Gr.:LDome:50000 50000 0

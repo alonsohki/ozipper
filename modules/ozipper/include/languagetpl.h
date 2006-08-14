@@ -42,6 +42,7 @@ public:
   const ReportData& Parse(const std::string& report) throw(Exception);
 
 private:
+  void InitRoles();
   void InitShips();
   void ReadRegex(const std::string& path, std::string& dest, pcre **re) throw(Exception);
   inline int ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, bool match_error = true) throw (Exception);
@@ -61,6 +62,7 @@ private:
   std::string m_re_round_str;
   std::string m_re_result_str;
   std::string m_re_moon_str;
+  std::string m_roles[2];
 };
 
 #endif /* #ifndef __LANGUAGETPL_H */
