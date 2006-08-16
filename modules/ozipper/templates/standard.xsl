@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output method="xml" encoding="UTF-8" />
+  <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
   <!-- Variables globales -->
   <xsl:variable name="nl">
@@ -31,8 +31,8 @@
 <!-- Raíz del resultado -->
 <xsl:template match="xml">
   <date>
-  <xsl:apply-templates select="$tr[@id = 'battleofday']" /><xsl:text> </xsl:text>
-  <xsl:apply-templates select="battle/date" />
+    <title><xsl:apply-templates select="$tr[@id = 'battleofday']" /><xsl:text> </xsl:text></title>
+    <day><xsl:apply-templates select="battle/date" /></day>
   </date>
   <text><xsl:value-of select="$nl" /></text>
   <rounds><xsl:apply-templates select="battle/rounds" /></rounds>
@@ -85,20 +85,30 @@
 <xsl:template match="xml/battle">
   <!-- Atacantes -->
   <attackers>
-  <name><xsl:apply-templates select="$tr[@id = 'attackers']" /><xsl:text> (</xsl:text></name>
-  <number><xsl:value-of select="count(player[role = 'attacker'])" /></number>
-  <xsl:text>)</xsl:text>
-  </attackers>
+  <title>
+    <name><xsl:apply-templates select="$tr[@id = 'attackers']" /></name>
+    <number>
+      <xsl:text> (</xsl:text>
+       <xsl:value-of select="count(player[role = 'attacker'])" />
+      <xsl:text>)</xsl:text>
+    </number>
+  </title>
   <xsl:apply-templates select="player[role = 'attacker']" />
+  </attackers>
   <text><xsl:value-of select="$nl" /></text>
   
   <!-- Defensores -->
   <defenders>
-  <name><xsl:apply-templates select="$tr[@id = 'defenders']" /><xsl:text> (</xsl:text></name>
-  <number><xsl:value-of select="count(player[role = 'defender'])" /></number>
-  <xsl:text>)</xsl:text>
-  </defenders>
+  <title>
+    <name><xsl:apply-templates select="$tr[@id = 'defenders']" /></name>
+    <number>
+      <xsl:text> (</xsl:text>
+      <xsl:value-of select="count(player[role = 'defender'])" />
+      <xsl:text>)</xsl:text>
+    </number>
+  </title>
   <xsl:apply-templates select="player[role = 'defender']" />
+  </defenders>
   <text><xsl:value-of select="$nl" /></text>
 
   <!-- Resultado -->
@@ -168,45 +178,51 @@
   <xsl:param name="ploss" />
   <total>
   <number><xsl:value-of select="format-number(sum($ploss/metal|$ploss/crystal|$ploss/deuterium), $mfmt, 'decimal')" /><xsl:text> </xsl:text></number>
-  <units><xsl:apply-templates select="$tr[@id = 'units']" /></units>
+  <text><xsl:apply-templates select="$tr[@id = 'units']" /></text>
   </total>
   <!-- Unidades individuales -->
   <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
+    <individual>
     <text><xsl:text> (</xsl:text></text>
-    <metal><xsl:value-of select="format-number(sum($ploss/metal), $mfmt, 'decimal')" /><xsl:text> </xsl:text></metal>
-    <units><xsl:apply-templates select="$tr[@id = 'metal']" /><xsl:text>, </xsl:text></units>
-    <crystal><xsl:value-of select="format-number(sum($ploss/crystal), $mfmt, 'decimal')" /><xsl:text> </xsl:text></crystal>
-    <units><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text>, </xsl:text></units>
-    <deuterium><xsl:value-of select="format-number(sum($ploss/deuterium), $mfmt, 'decimal')" /><xsl:text> </xsl:text></deuterium>
-    <units><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
+    <resource id="metal"><xsl:value-of select="format-number(sum($ploss/metal), $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+    <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /><xsl:text>, </xsl:text></units>
+    <resource id="crystal"><xsl:value-of select="format-number(sum($ploss/crystal), $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+    <units id="crystal"><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text>, </xsl:text></units>
+    <resource id="deuterium"><xsl:value-of select="format-number(sum($ploss/deuterium), $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+    <units id="deuterium"><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
     <text><xsl:text>)</xsl:text></text>
+    </individual>
   </xsl:if>
 </xsl:template>
 
 <!-- Datos individuales de cada jugador -->
 <xsl:template match="xml/battle/player">
   <text><xsl:value-of select="$nl" /></text>
-  <attacker>
-  <name><xsl:value-of select="name" /></name>
-  <coords><xsl:text> [</xsl:text><xsl:value-of select="coords" /><xsl:text>]</xsl:text></coords>
-  <text><xsl:value-of select="$nl" /></text>
-  <xsl:apply-templates select="techs" />
-  <text><xsl:value-of select="$nl" /></text>
-  <xsl:apply-templates select="fleet" />
-  <xsl:apply-templates select="losses" />
-  </attacker>
+  <player>
+    <name><xsl:value-of select="name" /></name>
+    <coords><xsl:text> [</xsl:text><xsl:value-of select="coords" /><xsl:text>]</xsl:text></coords>
+    <text><xsl:value-of select="$nl" /></text>
+    <techs><xsl:apply-templates select="techs" /></techs>
+    <text><xsl:value-of select="$nl" /></text>
+    <fleet><xsl:apply-templates select="fleet" /></fleet>
+    <xsl:apply-templates select="losses" />
+  </player>
 </xsl:template>
 
 <!-- Tecnologías de un jugador -->
 <xsl:template match="xml/battle/player/techs">
-  <techs>
-  <name><xsl:apply-templates select="$tr[@id = 'weapons']" /><xsl:text>: </xsl:text></name>
-  <value><xsl:value-of select="weapons" /><xsl:text>% </xsl:text></value>
-  <name><xsl:apply-templates select="$tr[@id = 'shields']" /><xsl:text>: </xsl:text></name>
-  <value><xsl:value-of select="shields" /><xsl:text>% </xsl:text></value>
-  <name><xsl:apply-templates select="$tr[@id = 'armour']" /><xsl:text>: </xsl:text></name>
-  <value><xsl:value-of select="armour" /><xsl:text>%</xsl:text></value>
-  </techs>
+  <tech id="weapons">
+    <name><xsl:apply-templates select="$tr[@id = 'weapons']" /><xsl:text>: </xsl:text></name>
+    <value><xsl:value-of select="weapons" /><xsl:text>% </xsl:text></value>
+  </tech>
+  <tech id="shields">
+    <name><xsl:apply-templates select="$tr[@id = 'shields']" /><xsl:text>: </xsl:text></name>
+    <value><xsl:value-of select="shields" /><xsl:text>% </xsl:text></value>
+  </tech>
+  <tech id="armour">
+    <name><xsl:apply-templates select="$tr[@id = 'armour']" /><xsl:text>: </xsl:text></name>
+    <value><xsl:value-of select="armour" /><xsl:text>%</xsl:text></value>
+  </tech>
 </xsl:template>
 
 <!-- Flotas de un jugador -->
@@ -228,7 +244,7 @@
   <name><xsl:apply-templates select="/xml/translation/ship[@id = $shipname]" /><xsl:text> </xsl:text></name>
   <number><xsl:value-of select="format-number(initial, $mfmt, 'decimal')" /><xsl:text> </xsl:text></number>
   <lost>
-  <xsl:apply-templates select="$tr[@id = 'lost']" /><xsl:text> </xsl:text>
+  <title><xsl:apply-templates select="$tr[@id = 'lost']" /><xsl:text> </xsl:text></title>
   <number><xsl:value-of select="format-number(lost, $mfmt, 'decimal')" /></number>
   </lost>
   </ship>
@@ -237,22 +253,23 @@
 
 <!-- Pérdidas individuales -->
 <xsl:template match="xml/battle/player/losses">
-  <xsl:variable name="role" select="../role" />
-  <losses role="{$role}">
+  <losses>
   <title><xsl:apply-templates select="$tr[@id = 'losses']" /><xsl:text>: </xsl:text></title>
   <total>
   <number><xsl:value-of select="format-number(sum(metal|crystal|deuterium), $mfmt, 'decimal')" /><xsl:text> </xsl:text></number>
-  <units><xsl:apply-templates select="$tr[@id = 'units']" /></units>
+  <text><xsl:apply-templates select="$tr[@id = 'units']" /><xsl:text> </xsl:text></text>
   </total>
   <!-- Unidades individuales -->
   <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
-    <text><xsl:text> (</xsl:text></text>
-    <metal><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></metal>
-    <units><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
-    <crystal><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></crystal>
-    <units><xsl:apply-templates select="$tr[@id = 'crystal']" /></units><text><xsl:text>, </xsl:text></text>
-    <deuterium><xsl:value-of select="format-number(deuterium, $mfmt, 'decimal')" /><xsl:text> </xsl:text></deuterium>
-    <units><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units><text><xsl:text>)</xsl:text></text>
+    <individual>
+    <text><xsl:text>(</xsl:text></text>
+    <resource id="metal"><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+    <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
+    <resource id="crystal"><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+    <units id="crystal"><xsl:apply-templates select="$tr[@id = 'crystal']" /></units><text><xsl:text>, </xsl:text></text>
+    <resource id="deuterium"><xsl:value-of select="format-number(deuterium, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+    <units id="deuterium"><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units><text><xsl:text>)</xsl:text></text>
+    </individual>
   </xsl:if>
   </losses>
   <text><xsl:value-of select="$nl" /></text>
@@ -270,26 +287,26 @@
 
 <xsl:template match="xml/battle/result/captures">
   <captures>
-  <text><xsl:apply-templates select="$tr[@id = 'captures']" /><xsl:text>: </xsl:text></text>
-  <metal><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></metal>
-  <units><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
-  <crystal><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></crystal>
-  <units><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text> </xsl:text></units>
+  <title><xsl:apply-templates select="$tr[@id = 'captures']" /><xsl:text>: </xsl:text></title>
+  <resource id="metal"><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+  <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
+  <resource id="crystal"><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+  <units id="crystal"><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text> </xsl:text></units>
   <text><xsl:apply-templates select="$tr[@id = 'and']" /><xsl:text> </xsl:text></text>
-  <deuterium><xsl:value-of select="format-number(deuterium, $mfmt, 'decimal')" /><xsl:text> </xsl:text></deuterium>
-  <xsl:apply-templates select="$tr[@id = 'deuterium']" />
+  <resource id="deuterium"><xsl:value-of select="format-number(deuterium, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
+  <units id="deuterium"><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
   </captures>
 </xsl:template>
 
 <!-- Escombros -->
 <xsl:template match="xml/battle/debris">
-  <units><xsl:apply-templates select="$tr[@id = 'metal']" /><xsl:text>: </xsl:text></units>
-  <metal><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /></metal>
-  <units><xsl:text> </xsl:text><xsl:apply-templates select="$tr[@id = 'units']" /></units>
+  <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /><xsl:text>: </xsl:text></units>
+  <resource id="metal"><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /></resource>
+  <text><xsl:text> </xsl:text><xsl:apply-templates select="$tr[@id = 'units']" /></text>
   <text><xsl:value-of select="$nl" /></text>
-  <units><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text>: </xsl:text></units>
-  <crystal><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /></crystal>
-  <units><xsl:text> </xsl:text><xsl:apply-templates select="$tr[@id = 'units']" /></units>
+  <units id="crystal"><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text>: </xsl:text></units>
+  <resource id="crystal"><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /></resource>
+  <text><xsl:text> </xsl:text><xsl:apply-templates select="$tr[@id = 'units']" /></text>
   <text><xsl:value-of select="$nl" /></text>
 </xsl:template>
 
@@ -352,27 +369,29 @@
   <percent><xsl:text>[</xsl:text><xsl:value-of select="format-number(($b - $l) div $l, $yfmt, 'yield')" /><xsl:text>] </xsl:text></percent>
   <total>
   <number><xsl:value-of select="format-number(-$l + $b, $mfmt, 'decimal')" /><xsl:text> </xsl:text></number>
-  <units><xsl:apply-templates select="$tr[@id = 'units']" /></units>
+  <text><xsl:apply-templates select="$tr[@id = 'units']" /></text>
   </total>
 
   <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
+    <individual>
     <text><xsl:text> (</xsl:text></text>
-    <metal>
+    <resource id="metal">
     <xsl:value-of select="format-number(-sum($losses/metal) + $capture/metal + $debris/metal, $mfmt, 'decimal')" />
     <xsl:text> </xsl:text>
-    </metal>
-    <units><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
-    <crystal>
+    </resource>
+    <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
+    <resource id="crystal">
     <xsl:value-of select="format-number(-sum($losses/crystal) + $capture/crystal + $debris/crystal, $mfmt, 'decimal')" />
     <xsl:text> </xsl:text>
-    </crystal>
-    <units><xsl:apply-templates select="$tr[@id = 'crystal']" /></units><text><xsl:text>, </xsl:text></text>
-    <deuterium>
+    </resource>
+    <units id="crystal"><xsl:apply-templates select="$tr[@id = 'crystal']" /></units><text><xsl:text>, </xsl:text></text>
+    <resource id="deuterium">
     <xsl:value-of select="format-number(-sum($losses/deuterium) + $capture/deuterium, $mfmt, 'decimal')" />
     <xsl:text> </xsl:text>
-    </deuterium>
-    <units><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
+    </resource>
+    <units id="deuterium"><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
     <text><xsl:text>)</xsl:text></text>
+    </individual>
   </xsl:if>
 </xsl:template>
 
