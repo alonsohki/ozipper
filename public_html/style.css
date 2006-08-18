@@ -2,6 +2,73 @@ body {
   background-color: #F0F1F7;
 }
 
+a {
+  font-family: Verdana;
+  font-size: 12px;
+}
+a:link {
+  text-decoration: none;
+  color: blue;
+}
+a:visited {
+  text-decoration: none;
+  color: blue;
+}
+a:hover {
+  text-decoration: underline;
+  color: red;
+}
+a:active {
+  text-decoration: underline;
+  color: green;
+}
+
+#contact_advice {
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+#contact_form tr #text {
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: right;
+}
+
+#contact_form #buttons td {
+  padding-top: 20px;
+  text-align: center;
+}
+#contact_form #buttons td input {
+  width: 100px;
+}
+#contact_form tr #content input {
+  width: 300px;
+}
+#contact_form tr #content textarea {
+  width: 300px;
+  height: 200px;
+}
+
+#header #main {
+  width: 100%;
+}
+
+#header #main #banner {
+  width: 30%;
+}
+
+#header #main #langselect {
+  width: 40%;
+}
+
+#header #main #options {
+  text-align: right;
+  vertical-align: middle;
+  padding-right: 5px;
+  width: 30%;
+}
+
 #content table {
   width: 100%;
 }
@@ -58,6 +125,8 @@ body {
   padding: 10px;
   background-color: #1F273C;
   margin-top: 4px;
+  font-family: Tahoma,Helvetica;
+  font-size: 13px;
 }
 
 .wysiwyg_light {
@@ -67,10 +136,22 @@ body {
   padding: 10px;
   background-color: #EFEFEF;
   margin-top: 4px;
+  font-family: Tahoma,Helvetica;
+  font-size: 13px;
 }
 
 #options table {
-  width: 320px;
+  width: 100%;
+}
+#options table #google {
+  text-align: right;
+  vertical-align: middle;
+  margin-right: 10%;
+}
+
+#options table table {
+  margin-top: 15px;
+  width: 380px;
   border: 1px solid #115786;
   border-collapse: collapse;
 }
@@ -124,50 +205,49 @@ body {
   font-style: italic;
 }
 
-#langselect table {
-  width: 25%;
+#header #main #langselect table {
+  width: 100%;
   border: 1px solid #1F273C;
   border-collapse: collapse;
-  margin-left: 37%;
-  margin-right: 38%;
-  margin-bottom: 10px;
-  margin-top: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 15px;
 }
 
-#langselect #desc {
+#header #main #langselect #desc {
   width: 50%;
   text-align: right;
   background-color: #AACCEE;
 }
 
-#langselect #desc span {
+#header #main #langselect #desc span {
   font-family: Verdana;
   font-weight: bold;
   font-size: 11px;
   margin-right: 4px;
 }
 
-#langselect #content {
+#header #main #langselect #content {
   width: 50%;
   text-align: left;
   background-color: #AACCEE;
 }
 
-#langselect #content select {
+#header #main #langselect #content select {
   width: 100%;
   font-family: Verdana;
   text-align: center;
   font-size: 12px;
 }
 
-#langselect #title {
+#header #main #langselect #title {
   width: 100%;
   text-align: center;
   background-color: #88AACC;
   border-bottom: 1px solid #1F273C;
 }
 
-#langselect #title span {
+#header #main #langselect #title span {
   font-family: Verdana;
   font-weight: bold;
   font-size: 14px;

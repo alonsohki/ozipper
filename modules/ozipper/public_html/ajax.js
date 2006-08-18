@@ -91,7 +91,7 @@ function AJAXResponse()
 
 function AJAXRequest()
 {
-  var server = "http://ozipper.azulverde.net/cgi-bin/ozipper.cgi";
+  var server = "http://www.ozipper.net/cgi/ozipper.cgi";
   ShowWait(true);
 
   if (!http)

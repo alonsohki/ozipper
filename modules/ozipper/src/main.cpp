@@ -9,6 +9,7 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltInternals.h>
 #include <libxslt/xsltutils.h>
+#include <sys/stat.h>
 
 class Ozipper
 {
@@ -85,8 +86,8 @@ public:
   {
     std::ifstream translation;
     std::string path;
-    char tmp[512];
-    size_t bytes;
+    char *tmp;
+    struct stat state;
     
     /* Inicializamos el xml */
     xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -110,21 +111,18 @@ public:
     {
       path = "lang/" + http.POST("lang") + "/translation.xml";
     }
+    
+    stat(path.c_str(), &state);
+    tmp = new char[state.st_size + 1];
     translation.open(path.c_str());
-    if (!translation.good())
+    if (!translation.is_open())
     {
       EXCEPTION("Unable to open translation.xml");
     }
-    do
-    {
-      bytes = translation.readsome(tmp, 511);
-      if (bytes > 0)
-      {
-	tmp[bytes] = '\0';
-	xml << tmp;
-      }
-    } while (bytes > 0);
-    translation.close();
+    translation.read(tmp, state.st_size);
+    tmp[state.st_size] = '\0';
+    xml << tmp;
+    delete[] tmp;
 
     /* Escribimos las opciones */
     xml << "  <options>\n";

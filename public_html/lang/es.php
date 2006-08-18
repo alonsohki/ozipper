@@ -16,7 +16,7 @@
                    'Dark'                       => 'Oscuro',
                    'Light'                      => 'Claro',
                    'Show:'	                => 'Mostrar:',
-                   'Output language:'           => 'Idioma del informe compactado:',
+                   'Output language:'           => 'Idioma del resultado:',
                    'Nothing'                    => 'Nada',
                    'Coordinates'                => 'Coordenadas',
                    'Technologies'               => 'Tecnologías',
@@ -25,6 +25,22 @@
                    'Plain text'                 => 'Sin formato',
                    'Reset'                      => 'Reestablecer',
                    'Individual units:'          => 'Unidades individuales:',
-		   'Select text'		=> 'Seleccionar texto'
+		   'Select text'		=> 'Seleccionar texto',
+		   'Contact'			=> 'Contacto',
+		   'Submit'			=> 'Enviar',
+		   'Your email address:'	=> 'Tu dirección de correo:',
+		   'Subject:'			=> 'Asunto:',
+		   'Message:'			=> 'Mensaje:',
+		   'Return to OZipper.net'	=> 'Volver a OZipper.net',
+
+
+
+
+                   'contact_advice'		=> 'En esta sección podrás enviar un email al webmaster de ozipper.net, ' .
+		                                   '<a href="mailto: webmaster@ozipper.net">webmaster@ozipper.net.</a><br />' .
+		                                   'Se ruega que el idioma esté en castellano o en inglés. Cualquier mensaje en otro idioma<br />' .
+						   'será ignorado.',
+		   'Please, fill all required data' => 'Por favor, rellena todos los campos del formulario',
+		   'Mail sent'			=> 'Email enviado'
                );
 ?>

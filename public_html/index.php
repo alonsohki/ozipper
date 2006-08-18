@@ -20,12 +20,14 @@
 	($lang == 'en.php' && $l == 'en')
        )
     {
-      echo " selected";
+      echo " selected=\"selected\"";
     }
   }
 
   header('Content-type: text/html; charset=UTF-8');
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
     <title><?=T('OGame zipper')?></title>
@@ -72,23 +74,30 @@
     // --></script>
   </head>
   <body onload="start();">
-    <div style="position: absolute"><img src="banner.png" alt="banner" /></div>
-    <div id="langselect">
-      <form action="" method="get" id="langchange">
-        <table>
-	  <tr>
-	    <td colspan="2" id="title"><span><?=T('Language')?></span></td>
-	  </tr>
-	  <tr>
-	    <td id="desc"><span><?=T('Select your language:')?></span></td>
-	    <td id="content"><select name="lang" onchange="HTMLObj('langchange').submit();">
-	                       <option value="en"<?=isl('en')?>><?=T('English')?></option>
-	                       <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
-	                     </select>
-	  </tr>
-	</table>
-      </form>
-    </div>
+    <div id="header">
+    <table id="main">
+      <tr>
+        <td id="banner"><img src="banner.png" alt="banner" /></td>
+	<td id="langselect">
+          <form action="" method="get" id="langchange">
+            <table>
+	      <tr>
+                <td colspan="2" id="title"><span><?=T('Language')?></span></td>
+              </tr>
+              <tr>
+                <td id="desc"><span><?=T('Select your language:')?></span></td>
+                <td id="content"><select name="lang" onchange="HTMLObj('langchange').submit();">
+	                           <option value="en"<?=isl('en')?>><?=T('English')?></option>
+	                           <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
+                                 </select>
+	        </td>
+              </tr>
+            </table>
+          </form>
+        </td>
+        <td id="options"><a href="contact.php?lang=<?=$langt?>"><?=T('Contact')?></a></td>
+      </tr>
+    </table>
     
     <div id="content">
     <form action="" method="post" accept-charset="UTF-8" onsubmit="return AJAXRequest();">
@@ -96,15 +105,15 @@
       <tr>
         <td id="informetd">
 	  <span><?=T('Enter your combat report:')?></span><br />
-	  <textarea id="informe"></textarea>
+	  <textarea id="informe" rows="1" cols="1"></textarea>
 	  <input type="hidden" id="selectedlang" value="<?=$langt?>" />
 	</td>
 	<td id="compactadotd">
 	  <div id="result">
 	    <span><?=T('Result:')?></span><br />
-	    <textarea id="compactado" onkeyup="compactadoChange();"></textarea>
+	    <textarea id="compactado" onkeyup="compactadoChange();" rows="1" cols="1"></textarea>
 	  </div>
-	  <img src="busy.gif" id="busy" />
+	  <img src="busy.gif" id="busy" alt="Please wait" />
 	</td>
       </tr>
       <tr>
@@ -118,6 +127,8 @@
 
     <div id="options">
       <table>
+      <tr><td>
+      <table id="optstable">
         <tr>
 	  <td id="title" colspan="2"><span><?=T('Options')?></span></td>
 	</tr>
@@ -150,6 +161,27 @@
 	<tr>
 	  <td id="desc"><span><?=T('Individual units:')?></span></td>
 	  <td id="content"><input type="checkbox" id="individual" checked /></td>
+	</tr>
+      </table>
+      </td><td id="google">
+      <div>
+<script type="text/javascript"><!--
+google_ad_client = "pub-1709658272618910";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+google_ad_channel ="";
+google_color_border = "EBECF5";
+google_color_bg = "F0F1F7";
+google_color_link = "0000FF";
+google_color_text = "000000";
+google_color_url = "008000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+  </script></div>
+      </td></tr>
       </table>
     </div>
 
