@@ -34,6 +34,10 @@
 		   'Return to OZipper.net'	=> 'Volver a OZipper.net',
 
 
+		   'meta_description'		=> 'Compactador de batallas de OGame',
+		   'meta_keywords'		=> 'ogame,compactador,informe,batallas,juego,online,mmporg',
+
+
 
 
                    'contact_advice'		=> 'En esta sección podrás enviar un email al webmaster de ozipper.net, ' .

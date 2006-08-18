@@ -30,6 +30,9 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
+    <meta name="description" content="<?=T('meta_description')?>" />
+    <meta name="keywords" content="<?=T('meta_keywords')?>" />
+
     <title><?=T('OGame zipper')?></title>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript"><!--
@@ -98,6 +101,7 @@
         <td id="options"><a href="contact.php?lang=<?=$langt?>"><?=T('Contact')?></a></td>
       </tr>
     </table>
+    </div>
     
     <div id="content">
     <form action="" method="post" accept-charset="UTF-8" onsubmit="return AJAXRequest();">
@@ -135,10 +139,11 @@
 	<tr>
 	  <td id="desc"><span><?=T('Format:')?></span></td>
 	  <td id="content"><select id="template">
-	                     <option value="bb_dark" selected>phpBB <?=T('Dark')?></option>
+	                     <option value="bb_dark" selected="selected">phpBB <?=T('Dark')?></option>
 			     <option value="bb_light">phpBB <?=T('Light')?></option>
 			     <option value="plain"><?=T('Plain text')?></option>
 			   </select>
+	  </td>
 	</tr>
 	<tr>
 	  <td id="desc"><span><?=T('Show:')?></span></td>
@@ -146,7 +151,7 @@
 	                     <option value="nothing"><?=T('Nothing')?></option>
 		             <option value="coords"><?=T('Coordinates')?></option>
 		             <option value="techs"><?=T('Technologies')?></option>
-		             <option value="all" selected><?=T('All')?></option>
+		             <option value="all" selected="selected"><?=T('All')?></option>
 	                   </select>
 	  </td>
 	</tr>
@@ -160,7 +165,7 @@
         </tr>
 	<tr>
 	  <td id="desc"><span><?=T('Individual units:')?></span></td>
-	  <td id="content"><input type="checkbox" id="individual" checked /></td>
+	  <td id="content"><input type="checkbox" id="individual" checked="checked" /></td>
 	</tr>
       </table>
       </td><td id="google">

@@ -30,6 +30,9 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
+    <meta name="description" content="<?=T('meta_description')?>" />
+    <meta name="keywords" content="<?=T('meta_keywords')?>" />
+
     <title>OZipper - <?=T('Contact')?></title>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript"><!--
