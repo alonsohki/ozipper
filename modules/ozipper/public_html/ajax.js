@@ -73,7 +73,15 @@ function AJAXResponse()
     if (!checkError(http.responseText.charAt(0)))
     {
       var text = http.responseText.substring(1);
-      HTMLObj('compactado').value = text;
+      if (HTMLObj('align').value == 'center')
+      {
+        HTMLObj('compactado').value = '[center]' + text + '[/center]';
+      }
+      else
+      {
+        HTMLObj('compactado').value = text;
+      }
+
       if (HTMLObj('template').value == 'bb_dark')
       {
         HTMLObj('wysiwyg').className = 'wysiwyg_dark';
@@ -91,7 +99,7 @@ function AJAXResponse()
 
 function AJAXRequest()
 {
-  var server = "http://www.ozipper.net/cgi/ozipper.cgi";
+  var server = "/cgi-bin/ozipper.cgi";
   ShowWait(true);
 
   if (!http)

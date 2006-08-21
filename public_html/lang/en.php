@@ -4,7 +4,9 @@
 
 
                    'meta_description'           => 'OGame combat report zipper',
-                   'meta_keywords'              => 'ogame,zipper,combat,report,game,online,mmporg',
+                   'meta_keywords'              => 'ogame,zipper,combat,report,converter,game,online,mmorpg',
+
+		   'foxgame_url'		=> 'http://foxgame.mozdev.org/index.en.html',
 
 
 

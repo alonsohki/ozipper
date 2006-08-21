@@ -33,9 +33,13 @@
 		   'Message:'			=> 'Mensaje:',
 		   'Return to OZipper.net'	=> 'Volver a OZipper.net',
 
+		   
+		   'Improve your game with FoxGame' => 'Mejora tu juego con FoxGame',
+		   'foxgame_url'		    => 'http://foxgame.mozdev.org',
+
 
 		   'meta_description'		=> 'Compactador de batallas de OGame',
-		   'meta_keywords'		=> 'ogame,compactador,informe,batallas,juego,online,mmporg',
+		   'meta_keywords'		=> 'ogame,compactador,convertidor,informe,batallas,juego,online,mmorpg',
 
 
 

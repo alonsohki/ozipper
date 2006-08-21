@@ -60,7 +60,7 @@
 	var format = getFormat();
 	if (format == 'bb_dark' || format == 'bb_light')
 	{
-          obj2.innerHTML = parseBBCode(obj.value);
+	  obj2.innerHTML = parseBBCode(obj.value);
 	}
 	else
 	{
@@ -98,7 +98,10 @@
             </table>
           </form>
         </td>
-        <td id="options"><a href="contact.php?lang=<?=$langt?>"><?=T('Contact')?></a></td>
+        <td id="options">
+	  <a href="<?=T('foxgame_url')?>"><?=T('Improve your game with FoxGame')?></a><br />
+	  <a href="contact.php?lang=<?=$langt?>"><?=T('Contact')?></a><br />
+	</td>
       </tr>
     </table>
     </div>
@@ -148,10 +151,18 @@
 	<tr>
 	  <td id="desc"><span><?=T('Show:')?></span></td>
 	  <td id="content"><select id="show">
-	                     <option value="nothing"><?=T('Nothing')?></option>
+	                     <option value="nothing" selected="selected"><?=T('Nothing')?></option>
 		             <option value="coords"><?=T('Coordinates')?></option>
 		             <option value="techs"><?=T('Technologies')?></option>
-		             <option value="all" selected="selected"><?=T('All')?></option>
+		             <option value="all"><?=T('All')?></option>
+	                   </select>
+	  </td>
+	</tr>
+	<tr>
+	  <td id="desc"><span><?=T('Align:')?></span></td>
+	  <td id="content"><select id="align">
+	                     <option value="left" selected="selected"><?=T('Left')?></option>
+			     <option value="center"><?=T('Center')?></option>
 	                   </select>
 	  </td>
 	</tr>

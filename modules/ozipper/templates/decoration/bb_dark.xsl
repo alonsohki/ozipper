@@ -50,10 +50,10 @@
 </xsl:template>
 
 <xsl:template match="xml/attackers/player/losses/total/number">
-  <xsl:text>[color=#00AA50]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+  <xsl:text>[color=#00AA50][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/color]</xsl:text>
 </xsl:template>
 <xsl:template match="xml/defenders/player/losses/total/number">
-  <xsl:text>[color=#ED7010]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+  <xsl:text>[color=#ED7010][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/color]</xsl:text>
 </xsl:template>
 
 <xsl:template match="xml/*/player/losses/individual">
@@ -79,40 +79,44 @@
   <xsl:text>[color=#00FF40]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/losses[@role = 'attacker']/total/number">
-  <xsl:text>[color=#00AA50]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+<xsl:template match="xml/losses/title">
+  <xsl:text>[b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/losses/individual">
+<xsl:template match="xml/losses/losses[@role = 'attacker']/total/number">
+  <xsl:text>[color=#00AA50][size=18]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/color]</xsl:text>
+</xsl:template>
+
+<!--<xsl:template match="xml/losses/losses/individual">
   <xsl:text>[i]</xsl:text><xsl:apply-templates /><xsl:text>[/i]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/losses[@role = 'attacker']/individual/resource">
+<xsl:template match="xml/losses/losses[@role = 'attacker']/individual/resource">
   <xsl:text>[color=#00AA50]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+</xsl:template>-->
+
+<xsl:template match="xml/losses/losses[@role = 'defender']/total/number">
+  <xsl:text>[color=#ED7010][size=18]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/color]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/losses[@role = 'defender']/total/number">
+<!--<xsl:template match="xml/losses/losses[@role = 'defender']/individual/resource">
   <xsl:text>[color=#ED7010]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+</xsl:template>-->
+
+<xsl:template match="xml/losses/losses[@role = 'total']/total/number">
+  <xsl:text>[size=20][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/size]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/losses[@role = 'defender']/individual/resource">
-  <xsl:text>[color=#ED7010]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
-</xsl:template>
-
-<xsl:template match="xml/losses[@role = 'total']/total/number">
-  <xsl:text>[size=17][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/size]</xsl:text>
-</xsl:template>
-
-<xsl:template match="xml/losses[@role = 'total']/individual/resource">
+<!--<xsl:template match="xml/losses/losses[@role = 'total']/individual/resource">
   <xsl:text>[b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b]</xsl:text>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template match="xml/debris/title">
   <xsl:text>[b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b]</xsl:text>
 </xsl:template>
 
 <xsl:template match="xml/debris/resource">
-  <xsl:text>[color=#ED7010]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+  <xsl:text>[color=#ED7010][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/color]</xsl:text>
 </xsl:template>
 
 <xsl:template match="xml/yield/title">
@@ -124,11 +128,11 @@
 </xsl:template>
 
 <xsl:template match="xml/yield/player[@role = 'attacker']/recycling/percent">
-  <xsl:text>[color=#00AA50][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b]</xsl:text>
+  <xsl:text>[color=#00AA50][size=14][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/size]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/yield/player[@role = 'attacker']/recycling/total/number">
-  <xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
+<xsl:template match="xml/yield/player/*/total/number">
+  <xsl:text>[size=20]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/color]</xsl:text>
 </xsl:template>
 
 <xsl:template match="xml/yield/player[@role = 'attacker']/recycling/individual/resource">
@@ -136,24 +140,24 @@
 </xsl:template>
 
 <xsl:template match="xml/yield/player[@role = 'attacker']/wrecycling/percent">
-  <xsl:text>[color=#E6E600][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b]</xsl:text>
+  <xsl:text>[color=#E6E600][size=14][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/size]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/yield/player[@role = 'attacker']/wrecycling/total/number">
+<!--<xsl:template match="xml/yield/player[@role = 'attacker']/wrecycling/total/number">
   <xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template match="xml/yield/player[@role = 'attacker']/wrecycling/individual/resource">
   <xsl:text>[color=#E6E600]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
 </xsl:template>
 
 <xsl:template match="xml/yield/player[@role = 'defender']/recycling/percent">
-  <xsl:text>[color=#ED7010][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b]</xsl:text>
+  <xsl:text>[color=#ED7010][size=14][b]</xsl:text><xsl:value-of select="." /><xsl:text>[/b][/size]</xsl:text>
 </xsl:template>
 
-<xsl:template match="xml/yield/player[@role = 'defender']/recycling/total/number">
+<!--<xsl:template match="xml/yield/player[@role = 'defender']/recycling/total/number">
   <xsl:value-of select="." /><xsl:text>[/color]</xsl:text>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template match="xml/yield/player[@role = 'defender']/recycling/individual/resource">
   <xsl:text>[color=#ED7010]</xsl:text><xsl:value-of select="." /><xsl:text>[/color]</xsl:text>

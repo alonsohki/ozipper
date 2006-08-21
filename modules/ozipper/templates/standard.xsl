@@ -115,6 +115,9 @@
   <xsl:apply-templates select="result" />
   <text><xsl:value-of select="$nl" /></text>
 
+  <losses>
+    <title><xsl:value-of select="$tr[@id = 'losses']" /></title>
+    <text><xsl:value-of select="$nl" /></text>
   <!-- Pérdidas atacantes -->
   <losses role="attacker">
   <title><xsl:apply-templates select="$tr[@id = 'attackerfleetlosses']" /><xsl:text>: </xsl:text></title>
@@ -140,11 +143,19 @@
     <xsl:with-param name="ploss" select="player/losses" />
   </xsl:call-template>
   </losses>
+  </losses>
   <text><xsl:value-of select="$nl" /><xsl:value-of select="$nl" /></text>
 
   <!-- Escombros -->
   <debris>
   <title><xsl:apply-templates select="$tr[@id = 'debris']" /></title>
+  <xsl:variable name="total" select="debris/metal + debris/crystal" />
+  <nrecyclers>
+  <xsl:text> (</xsl:text>
+  <xsl:value-of select="format-number(floor((($total - 1) div 20000) + 1), $mfmt, 'decimal')" /><xsl:text> </xsl:text>
+  <xsl:value-of select="$tr[@id = 'recyclers']" />
+  <xsl:text>)</xsl:text>
+  </nrecyclers>
   <text><xsl:value-of select="$nl" /></text>
   <xsl:apply-templates select="debris" />
   </debris>
@@ -162,8 +173,7 @@
     <xsl:with-param name="role">defender</xsl:with-param>
   </xsl:call-template>
   </yield>
-  <text><xsl:value-of select="$nl" />
-  <xsl:value-of select="$nl" /></text>
+  <text><xsl:value-of select="$nl" /><xsl:value-of select="$nl" /></text>
 
   <!-- Luna -->
   <xsl:apply-templates select="moon" />
@@ -181,18 +191,18 @@
   <text><xsl:apply-templates select="$tr[@id = 'units']" /></text>
   </total>
   <!-- Unidades individuales -->
-  <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
+<!--  <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
     <individual>
-    <text><xsl:text> (</xsl:text></text>
+    <text><xsl:value-of select="$nl" /><xsl:text>(</xsl:text></text>
     <resource id="metal"><xsl:value-of select="format-number(sum($ploss/metal), $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
     <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /><xsl:text>, </xsl:text></units>
     <resource id="crystal"><xsl:value-of select="format-number(sum($ploss/crystal), $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
     <units id="crystal"><xsl:apply-templates select="$tr[@id = 'crystal']" /><xsl:text>, </xsl:text></units>
     <resource id="deuterium"><xsl:value-of select="format-number(sum($ploss/deuterium), $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
     <units id="deuterium"><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
-    <text><xsl:text>)</xsl:text></text>
+    <text><xsl:text>)</xsl:text><xsl:value-of select="$nl" /></text>
     </individual>
-  </xsl:if>
+  </xsl:if>-->
 </xsl:template>
 
 <!-- Datos individuales de cada jugador -->
@@ -262,7 +272,7 @@
   <!-- Unidades individuales -->
   <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
     <individual>
-    <text><xsl:text>(</xsl:text></text>
+    <text><xsl:value-of select="$nl" /><xsl:text>(</xsl:text></text>
     <resource id="metal"><xsl:value-of select="format-number(metal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
     <units id="metal"><xsl:apply-templates select="$tr[@id = 'metal']" /></units><text><xsl:text>, </xsl:text></text>
     <resource id="crystal"><xsl:value-of select="format-number(crystal, $mfmt, 'decimal')" /><xsl:text> </xsl:text></resource>
@@ -374,7 +384,7 @@
 
   <xsl:if test="$opts[@id = 'individual-units'] = 'true'">
     <individual>
-    <text><xsl:text> (</xsl:text></text>
+    <text><xsl:value-of select="$nl" /><xsl:text>(</xsl:text></text>
     <resource id="metal">
     <xsl:value-of select="format-number(-sum($losses/metal) + $capture/metal + $debris/metal, $mfmt, 'decimal')" />
     <xsl:text> </xsl:text>
@@ -390,7 +400,7 @@
     <xsl:text> </xsl:text>
     </resource>
     <units id="deuterium"><xsl:apply-templates select="$tr[@id = 'deuterium']" /></units>
-    <text><xsl:text>)</xsl:text></text>
+    <text><xsl:text>)</xsl:text><xsl:value-of select="$nl" /></text>
     </individual>
   </xsl:if>
 </xsl:template>

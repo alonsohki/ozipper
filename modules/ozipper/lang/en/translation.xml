@@ -58,10 +58,11 @@
     <string id="crystal">Crystal</string>
     <string id="deuterium">Deuterium</string>
     <string id="and">and</string>
-    <string id="attackerfleetlosses">Attacking fleet losses</string>
-    <string id="defenderfleetlosses">Defending fleet losses</string>
-    <string id="totallosses">Total losses</string>
+    <string id="attackerfleetlosses">Attacking fleet</string>
+    <string id="defenderfleetlosses">Defending fleet</string>
+    <string id="totallosses">Total</string>
     <string id="debris">Debris</string>
+    <string id="recyclers">recyclers</string>
     <string id="units">units</string>
     <string id="yield">Yield</string>
     <string id="recycling">harvesting</string>

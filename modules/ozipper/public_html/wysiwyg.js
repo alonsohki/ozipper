@@ -78,6 +78,10 @@ function parseBBCode(text_)
   text = text.replace(/\[I\]/gi, '<i>');
   text = text.replace(/\[\/I\]/gi, '</i>');
 
+  /* Reemplazamos centrado */
+  text = text.replace(/\[CENTER\]/gi, '<div align="center">');
+  text = text.replace(/\[\/CENTER\]/gi, '</div>');
+
   /* Buscamos colores, tamaños, urls */
   var ftext = '';
   positions = new Array(0, 0, 0);

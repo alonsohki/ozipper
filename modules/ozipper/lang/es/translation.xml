@@ -58,10 +58,11 @@
     <string id="crystal">Cristal</string>
     <string id="deuterium">Deuterio</string>
     <string id="and">y</string>
-    <string id="attackerfleetlosses">Pérdidas de la flota atacante</string>
-    <string id="defenderfleetlosses">Pérdidas de la flota defensora</string>
-    <string id="totallosses">Pérdidas totales</string>
+    <string id="attackerfleetlosses">Flota atacante</string>
+    <string id="defenderfleetlosses">Flota defensora</string>
+    <string id="totallosses">Total</string>
     <string id="debris">Escombros</string>
+    <string id="recyclers">Recicladores</string>
     <string id="units">unidades</string>
     <string id="yield">Rentabilidad</string>
     <string id="recycling">reciclando</string>

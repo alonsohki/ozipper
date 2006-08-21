@@ -129,6 +129,16 @@ a:active {
   font-size: 13px;
 }
 
+.wysiwyg_dark a:link, .wysiwyg_dark a:visited, .wysiwyg_dark a:active {
+  color: #B0C4DE;
+  text-decoration: none;
+}
+
+.wysiwyg_dark a:hover {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
 .wysiwyg_light {
   width: 98%;
   color: #000000;
@@ -138,6 +148,15 @@ a:active {
   margin-top: 4px;
   font-family: Tahoma,Helvetica;
   font-size: 13px;
+}
+
+.wysiwyg_light a:link, .wysiwyg_light a:visited, .wysiwyg_light a:active {
+  color: #000000;
+  text-decoration: underline;
+}
+.wysiwyg_light a:hover {
+  color: #000000;
+  text-decoration: none;
 }
 
 #options table {
