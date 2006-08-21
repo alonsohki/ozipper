@@ -32,6 +32,9 @@
 		   'Subject:'			=> 'Asunto:',
 		   'Message:'			=> 'Mensaje:',
 		   'Return to OZipper.net'	=> 'Volver a OZipper.net',
+		   'Align:'			=> 'Alineado:',
+		   'Left'			=> 'Izquierda',
+		   'Center'			=> 'Centrado',
 
 		   
 		   'Improve your game with FoxGame' => 'Mejora tu juego con FoxGame',
