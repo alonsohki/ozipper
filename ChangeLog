@@ -62,3 +62,7 @@
   ----------------------------
   Implementados cambios en plantillas y alineación.
 
+* 27/08/2006 - ryden@bhats.org
+  ----------------------------
+  Arreglados fallos que no permitian el funcionamiento correcto con
+  mod_security.

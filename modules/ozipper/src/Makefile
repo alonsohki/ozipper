@@ -1,7 +1,7 @@
 include ../Makefile.inc
 
 PROGRAM=ozipper.cgi
-CFLAGS=-O3 -pipe -Wall `xslt-config --cflags` `xml2-config --cflags`
+CFLAGS=-O3 -march=pentium4 -pipe -Wall `xslt-config --cflags` `xml2-config --cflags`
 LFLAGS=-lpcre -L/usr/lib `xslt-config --libs` `xml2-config --libs`
 IFLAGS=-I. -I.. -I../include
 RM=`which rm`
