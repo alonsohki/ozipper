@@ -4,7 +4,9 @@
 		 'en-us'	=> 'en.php',
 		 'en-gb'	=> 'en.php',
 		 'es'		=> 'es.php',
-		 'es-es'	=> 'es.php'
+		 'es-es'	=> 'es.php',
+		 'de'	        => 'de.php',
+		 'de-de'	=> 'de.php'
                 );
 
   function T($str)

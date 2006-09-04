@@ -45,7 +45,7 @@ private:
   void InitRoles();
   void InitShips();
   void ReadRegex(const std::string& path, std::string& dest, pcre **re) throw(Exception);
-  inline int ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, bool match_error = true) throw (Exception);
+  inline int ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, const char *, bool match_error = true) throw (Exception);
   void InitRegex() throw(Exception);
 
   ReportData m_result;

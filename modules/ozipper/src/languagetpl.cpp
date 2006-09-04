@@ -7,7 +7,8 @@
 #include "languagetpl.h"
 #include "shipfactory.h"
 
-int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, bool match_error) throw(Exception)
+int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, const char *regexName, bool match_error)
+                                throw(Exception)
 {
   int rc;
 
@@ -27,7 +28,7 @@ int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset
       case PCRE_ERROR_NOMATCH:
 	if (match_error)
 	{
-	  EXCEPTION("pcre_exec error: String didn't match");
+	  EXCEPTION("pcre_exec error: String didn't match with %s", regexName);
 	}
 	break;
 
@@ -135,7 +136,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   int last_end;
 
   /* Obtenemos la fecha */
-  rc = ExecRegex(m_re_date, report, 0, ovector, 64);
+  rc = ExecRegex(m_re_date, report, 0, ovector, 64, "date");
   m_result.date.tm_mon  = IntRegex(report.c_str() + ovector[2],  ovector[3] - ovector[2]) - 1;
   m_result.date.tm_mday = IntRegex(report.c_str() + ovector[4],  ovector[5] - ovector[4]);
   m_result.date.tm_hour = IntRegex(report.c_str() + ovector[6],  ovector[7] - ovector[6]);
@@ -146,7 +147,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   /* Obtenemos la presentación de las flotas */
   do
   {
-    rc = ExecRegex(m_re_fleets, report, last_end, ovector, 64, false);
+    rc = ExecRegex(m_re_fleets, report, last_end, ovector, 64, "fleets", false);
 
     if (rc > 0)
     {
@@ -189,7 +190,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   m_result.rounds = 0;
   do
   {
-    rc = ExecRegex(m_re_startround, report, last_end, ovector, 64, false);
+    rc = ExecRegex(m_re_startround, report, last_end, ovector, 64, "start_round", false);
 
     if (rc > 0)
     {
@@ -200,7 +201,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
 
   do
   {
-    rc = ExecRegex(m_re_round, report, last_end, ovector, 64, false);
+    rc = ExecRegex(m_re_round, report, last_end, ovector, 64, "round", false);
 
     if (rc > 0)
     {
@@ -229,7 +230,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   } while (rc > 0);
 
   /* Resultado de la batalla */
-  rc = ExecRegex(m_re_result, report, last_end, ovector, 64);
+  rc = ExecRegex(m_re_result, report, last_end, ovector, 64, "result");
 
   if (rc > 0)
   {
@@ -255,7 +256,7 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
   }
 
   /* Verificamos si hay luna */
-  rc = ExecRegex(m_re_moon, report, last_end, ovector, 64, false);
+  rc = ExecRegex(m_re_moon, report, last_end, ovector, 64, "moon", false);
 
   if (rc > 0)
   {

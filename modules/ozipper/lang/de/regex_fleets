@@ -1,0 +1,1 @@
+([\s\r\n]*)*(Angreifer|Verteidiger) (.*) \(([1-9]:[0-9]{1,3}:[0-9]{1,3})\)([\s\r\n]*)*Waffen: ([0-9]{1,3})% Schilde: ([0-9]{1,3})% Hülle: ([0-9]{1,3})%([\s\r\n]*)*((Typ\s+(.*)([\s\r\n]*)*Anz.\s+(.*)([\s\r\n]*)*Bewaff:?.\s+.*([\s\r\n]*)*Schilde\s+.*([\s\r\n]*)*Hülle\s+.*([\s\r\n]*)*)|Vernichtet)([\s\r\n]*)*

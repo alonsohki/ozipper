@@ -17,7 +17,8 @@
 
     if (
         ($lang == 'es.php' && $l == 'es') ||
-	($lang == 'en.php' && $l == 'en')
+	($lang == 'en.php' && $l == 'en') ||
+	($lang == 'de.php' && $l == 'de')
        )
     {
       echo " selected=\"selected\"";
@@ -32,6 +33,7 @@
   <head>
     <meta name="description" content="<?=T('meta_description')?>" />
     <meta name="keywords" content="<?=T('meta_keywords')?>" />
+    <META name="verify-v1" content="jtK4eZOMOFVjiSgvK5617FsF5FjLIjEJIy5WRQ8+YUg=" />
 
     <title><?=T('OGame zipper')?></title>
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -92,6 +94,7 @@
                 <td id="content"><select name="lang" onchange="HTMLObj('langchange').submit();">
 	                           <option value="en"<?=isl('en')?>><?=T('English')?></option>
 	                           <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
+				   <option value="de"<?=isl('de')?>><?=T('German')?></option>
                                  </select>
 	        </td>
               </tr>
@@ -111,7 +114,7 @@
     <table>
       <tr>
         <td id="informetd">
-	  <span><?=T('Enter your combat report:')?></span><br />
+	  <span><?=T('Paste your combat report:')?></span><br />
 	  <textarea id="informe" rows="1" cols="1"></textarea>
 	  <input type="hidden" id="selectedlang" value="<?=$langt?>" />
 	</td>
@@ -171,6 +174,7 @@
           <td id="content"><select id="outputlang">
 			     <option value="en"<?=isl('en')?>><?=T('English')?></option>
 			     <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
+			     <option value="de"<?=isl('de')?>><?=T('German')?></option>
                            </select>
           </td>
         </tr>

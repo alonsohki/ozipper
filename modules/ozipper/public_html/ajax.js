@@ -126,12 +126,13 @@ function AJAXRequest()
   poststr += "&individual=" + (HTMLObj('individual').checked ? "1" : "0") +
              "&template=" + HTMLObj('template').value +
 	     "&outputlang=" + HTMLObj('outputlang').value +
-             "&report=" + escape(HTMLObj('informe').value + "\n");
+             "&report=" + encodeURIComponent(HTMLObj('informe').value + "\n");
   
   http.open("POST", server, true);
   http.onreadystatechange = AJAXResponse;
   http.setRequestHeader("Accept-Charset", "UTF-8");
   http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.setRequestHeader("Charset", "UTF-8");
   http.setRequestHeader("Content-length", poststr.length);
   http.setRequestHeader("Connection", "close");
   http.send(poststr);

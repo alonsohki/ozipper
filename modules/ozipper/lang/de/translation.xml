@@ -1,0 +1,74 @@
+  <translation>
+    <ship id="SCargo">Kleiner Transporter</ship>
+    <ship id="LCargo">Großer Transporter</ship>
+    <ship id="LFighter">Leichter Jäger</ship>
+    <ship id="HFighter">Schwerer Jäger</ship>
+    <ship id="Cruiser">Kreuzer</ship>
+    <ship id="BShip">Schlachtschiff</ship>
+    <ship id="Recycler">Recycler</ship>
+    <ship id="ColonyShip">Kolonieschiff</ship>
+    <ship id="Probe">Spionagesonde</ship>
+    <ship id="Bomber">Bomber</ship>
+    <ship id="Sat">Solarsatellit</ship>
+    <ship id="Destroyer">Zerstörer</ship>
+    <ship id="RIP">Todesstern</ship>
+    <ship id="RocketL">Raketenwerfer</ship>
+    <ship id="LLaser">Leichtes Lasergeschütz</ship>
+    <ship id="HLaser">Schweres Lasergeschütz</ship>
+    <ship id="Ion">Ionengeschüzt</ship>
+    <ship id="Gauss">Gaußkanone</ship>
+    <ship id="Plasma">Plasmawerfer</ship>
+    <ship id="SDome">Kleine Schildkuppel</ship>
+    <ship id="LDome">Große Schildkuppel</ship>
+
+    <months>
+      <month id="0">Januar</month>
+      <month id="1">Februar</month>
+      <month id="2">März</month>
+      <month id="3">April</month>
+      <month id="4">Mai</month>
+      <month id="5">Juni</month>
+      <month id="6">Juli</month>
+      <month id="7">August</month>
+      <month id="8">September</month>
+      <month id="9">Oktober</month>
+      <month id="10">November</month>
+      <month id="11">Dezember</month>
+    </months>
+
+    <string id="battleofday">Kampf am</string>
+    <string id="of"></string>
+    <string id="at">um</string>
+    <string id="brounds">Der Kampf dauerte</string>
+    <string id="rounds">Runden</string>
+    <string id="round">Runde</string>
+    <string id="attackers">Angreifer</string>
+    <string id="defenders">Verteidiger</string>
+    <string id="weapons">Waffen</string>
+    <string id="shields">Schilde</string>
+    <string id="armour">Hülle</string>
+    <string id="noships">Keine Schiffe und keine Verteidigung</string>
+    <string id="lost">Verluste</string>
+    <string id="losses">Verluste</string>
+    <string id="winner_attacker">Der Angreifer hat die Schlacht gewonnen!</string>
+    <string id="winner_defender">Der Verteidiger hat die Schlacht gewonnen!</string>
+    <string id="winner_nobody">Die Schlacht endet unentschieden, beide Flotten ziehen sich auf ihre Heimatplaneten zurück</string>
+    <string id="captures">Er erbeutet</string>
+    <string id="metal">Metall</string>
+    <string id="crystal">Kristall</string>
+    <string id="deuterium">Deuterium</string>
+    <string id="and">und</string>
+    <string id="attackerfleetlosses">Angreifende Flotte</string>
+    <string id="defenderfleetlosses">Verteidigende Flotte</string>
+    <string id="totallosses">Gesamt</string>
+    <string id="debris">Trümmerfeld</string>
+    <string id="recyclers">Recycler</string>
+    <string id="units">Einheiten</string>
+    <string id="yield">Gewinn</string>
+    <string id="recycling">nach Abbau</string>
+    <string id="wrecycling">ohne Abbau</string>
+    <string id="moonchance">Die Chance einer Mondentstehung beträgt</string>
+    <string id="moonhit">Die enormen Mengen an freiem Metall und Kristall ziehen sich an und formen einen Trabanten um den Planeten</string>
+    <string id="spam">KB konvertiert durch</string>
+  </translation>
+
