@@ -10,12 +10,12 @@ class Player
 public:
   Player(const Player& player);
 
-  const std::string& GetName();
-  const std::string& GetRole();
-  const std::string& GetCoords();
-  int GetWeapons();
-  int GetShield();
-  int GetArmour();
+  const std::string& GetName() const;
+  const std::string& GetRole() const;
+  const std::string& GetCoords() const;
+  int GetWeapons() const;
+  int GetShield() const;
+  int GetArmour() const;
   const std::map<const std::string, unsigned int>& GetShips(int round);
 
   void CreateShip(const std::string& name, unsigned int count, int round);
@@ -29,10 +29,12 @@ public:
 				 int armour = 0,
 				 bool create = false)
                                  throw(Exception);
+  static const std::map<const std::string, Player> & GetPlayers(const std::string& role);
 
 private:
   Player(const std::string& m_name, const std::string& role, const std::string& coords, int weapons, int shield, int armour);
 
+  static std::map< const std::string, std::map<const std::string, Player> > players;
   std::string m_name;
   std::string m_coords;
   int m_weapons;

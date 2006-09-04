@@ -70,8 +70,8 @@ function AJAXResponse()
 {
   if (http.readyState == 4)
   {
-    if (!checkError(http.responseText.charAt(0)))
-    {
+//    if (!checkError(http.responseText.charAt(0)))
+//    {
       var text = http.responseText.substring(1);
       if (HTMLObj('align').value == 'center')
       {
@@ -92,7 +92,7 @@ function AJAXResponse()
       }
       format = HTMLObj('template').value;
       compactadoChange();
-    }
+//    }
     ShowWait(false);
   }
 }

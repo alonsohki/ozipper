@@ -156,18 +156,19 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
       last_end = ovector[1];
 
       /* Extraemos los datos del jugador */
+      std::string name;
       std::string role;
+      name.append(report.c_str() + ovector[6], ovector[7] - ovector[6]);
       role.append(report.c_str() + ovector[4], ovector[5] - ovector[4]);
       
-      Player * player = (Player *)&Player::GetPlayer(
-            std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]), /* name */
+      Player *player = (Player *)&Player::GetPlayer(
+            name,									/* name */
 	    role == m_roles[0] ? "attacker" : "defender",                               /* role */
 	    std::string().append(report.c_str() + ovector[8], ovector[9] - ovector[8]), /* coords */
 	    IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* weapons */
 	    IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]),		/* shield */
 	    IntRegex(report.c_str() + ovector[16], ovector[17] - ovector[16]),		/* armour */
 	    true);
-      m_result.players.push_back(player);
 
       /* Si no tiene flota ni defensa, rc == 9 */
       if (rc > 9)
@@ -185,6 +186,21 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
       }
     }
   } while (rc > 0);
+
+  /* Construímos el vector de jugadores.
+   * TODO: Eliminar esta función y utilizar el método estático de Player.
+   */
+  std::map<const std::string, Player>::const_iterator i;
+  for (i = Player::GetPlayers("attacker").begin(); i != Player::GetPlayers("attacker").end(); i++)
+  {
+    const Player &p = (*i).second;
+    m_result.players.push_back((Player *)&p);
+  }
+  for (i = Player::GetPlayers("defender").begin(); i != Player::GetPlayers("defender").end(); i++)
+  {
+    const Player &p = (*i).second;
+    m_result.players.push_back((Player *)&p);
+  }
 
   /* Buscamos la última ronda */
   m_result.rounds = 0;

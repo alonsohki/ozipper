@@ -4,6 +4,8 @@
 #include "exception.h"
 #include "player.h"
 
+std::map< const std::string, std::map<const std::string, Player> > Player::players;
+
 const Player& Player::GetPlayer(const std::string& name,
                                 const std::string& role,
 				const std::string& coords,
@@ -13,8 +15,18 @@ const Player& Player::GetPlayer(const std::string& name,
 				bool create)
                                 throw(Exception)
 {
-  static std::map< const std::string, std::map<const std::string, Player> > players;
   std::map<const std::string, Player>::iterator i;
+
+  if (players.begin() == players.end())
+  {
+    /* Inicialización */
+    std::map<const std::string, Player> m_empty;
+    std::pair<const std::string, std::map<const std::string, Player> > m_pair_attacker("attacker", m_empty);
+    std::pair<const std::string, std::map<const std::string, Player> > m_pair_defender("defender", m_empty);
+
+    players.insert(m_pair_attacker);
+    players.insert(m_pair_defender);
+  }
 
   i = players[role].find(name);
   if (i == players[role].end())
@@ -32,6 +44,11 @@ const Player& Player::GetPlayer(const std::string& name,
   }
 
   return (*i).second;
+}
+
+const std::map<const std::string, Player> & Player::GetPlayers(const std::string& role)
+{
+  return players[role];
 }
 
 Player::Player(const Player& player) :
@@ -77,31 +94,31 @@ unsigned int Player::GetShipCount(const std::string& name, int round) throw(Exce
   return (*i).second;
 }
 
-const std::string& Player::GetName()
+const std::string& Player::GetName() const
 {
   return m_name;
 }
-const std::string& Player::GetRole()
+const std::string& Player::GetRole() const
 {
   return m_role;
 }
-const std::string& Player::GetCoords()
+const std::string& Player::GetCoords() const
 {
   return m_coords;
 }
-int Player::GetWeapons()
+int Player::GetWeapons() const
 {
   return m_weapons;
 }
-int Player::GetShield()
+int Player::GetShield() const
 {
   return m_shield;
 }
-int Player::GetArmour()
+int Player::GetArmour() const
 {
   return m_armour;
 }
-const std::map<const std::string, unsigned int>& Player::GetShips(int round)
+const std::map<const std::string, unsigned int>& Player::GetShips(int round) 
 {
   return m_ships[round];
 }
