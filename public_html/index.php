@@ -17,8 +17,8 @@
 
     if (
         ($lang == 'es.php' && $l == 'es') ||
-	($lang == 'en.php' && $l == 'en') ||
-	($lang == 'de.php' && $l == 'de')
+        ($lang == 'en.php' && $l == 'en') ||
+        ($lang == 'de.php' && $l == 'de')
        )
     {
       echo " selected=\"selected\"";
@@ -50,8 +50,8 @@
 
       function start()
       {
-        compactadoChange();
-	ShowWait(false);
+//        compactadoChange();
+        ShowWait(false);
       }
 
       function compactadoChange()
@@ -59,22 +59,26 @@
         var obj = HTMLObj('compactado');
         var obj2 = HTMLObj('wysiwyg');
 
-	var format = getFormat();
-	if (format == 'bb_dark' || format == 'bb_light')
-	{
-	  obj2.innerHTML = parseBBCode(obj.value);
-	}
-	else
-	{
-	  obj2.innerHTML = stripTags(obj.value);
-	}
+        var format = getFormat();
+        if (format == 'bb_dark' || format == 'bb_light')
+        {
+          obj2.innerHTML = parseCode(obj.value, 'bb');
+        }
+        else if (format == 'smf_dark' || format == 'smf_light')
+        {
+          obj2.innerHTML = parseCode(obj.value, 'smf');
+        }
+        else
+        {
+          obj2.innerHTML = stripTags(obj.value);
+        }
       }
 
       function bselect()
       {
         var obj = HTMLObj('compactado');
-	obj.focus();
-	obj.select();
+        obj.focus();
+        obj.select();
       }
     // --></script>
   </head>
@@ -83,10 +87,10 @@
     <table id="main">
       <tr>
         <td id="banner"><img src="banner.png" alt="banner" /></td>
-	<td id="langselect">
+        <td id="langselect">
           <form action="" method="get" id="langchange">
             <table>
-	      <tr>
+              <tr>
                 <td colspan="2" id="title"><span><?=T('Language')?></span></td>
               </tr>
               <tr>
@@ -94,17 +98,17 @@
                 <td id="content"><select name="lang" onchange="HTMLObj('langchange').submit();">
 	                           <option value="en"<?=isl('en')?>><?=T('English')?></option>
 	                           <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
-				   <option value="de"<?=isl('de')?>><?=T('German')?></option>
+                             <option value="de"<?=isl('de')?>><?=T('German')?></option>
                                  </select>
-	        </td>
+                </td>
               </tr>
             </table>
           </form>
         </td>
         <td id="options">
-	  <a href="<?=T('foxgame_url')?>"><?=T('Improve your game with FoxGame')?></a><br />
-	  <a href="contact.php?lang=<?=$langt?>"><?=T('Contact')?></a><br />
-	</td>
+          <a href="<?=T('foxgame_url')?>"><?=T('Improve your game with FoxGame')?></a><br />
+          <a href="contact.php?lang=<?=$langt?>"><?=T('Contact')?></a><br />
+        </td>
       </tr>
     </table>
     </div>
@@ -114,22 +118,22 @@
     <table>
       <tr>
         <td id="informetd">
-	  <span><?=T('Paste your combat report:')?></span><br />
-	  <textarea id="informe" rows="1" cols="1"></textarea>
-	  <input type="hidden" id="selectedlang" value="<?=$langt?>" />
-	</td>
-	<td id="compactadotd">
-	  <div id="result">
-	    <span><?=T('Result:')?></span><br />
-	    <textarea id="compactado" onkeyup="compactadoChange();" rows="1" cols="1"></textarea>
-	  </div>
-	  <img src="busy.gif" id="busy" alt="Please wait" />
-	</td>
+          <span><?=T('Paste your combat report:')?></span><br />
+          <textarea id="informe" rows="1" cols="1"></textarea>
+          <input type="hidden" id="selectedlang" value="<?=$langt?>" />
+        </td>
+        <td id="compactadotd">
+          <div id="result">
+            <span><?=T('Result:')?></span><br />
+            <textarea id="compactado" onkeyup="compactadoChange();" rows="1" cols="1"></textarea>
+          </div>
+          <img src="busy.gif" id="busy" alt="Please wait" />
+        </td>
       </tr>
       <tr>
         <td id="informetd"><input type="submit" value="<?=T('Process report')?>" id="submit" />&nbsp;
-	                   <input type="reset" value="<?=T('Reset')?>" onclick="HTMLObj('wysiwyg').innerHTML=''" /></td>
-	<td id="compactadotd" align="center"><input type="button" onclick="bselect();" value="<?=T('Select text')?>" /></td>
+                           <input type="reset" value="<?=T('Reset')?>" onclick="HTMLObj('wysiwyg').innerHTML=''" /></td>
+        <td id="compactadotd" align="center"><input type="button" onclick="bselect();" value="<?=T('Select text')?>" /></td>
       </tr>
     </table>
     </form>
@@ -140,18 +144,20 @@
       <tr><td>
       <table id="optstable">
         <tr>
-	  <td id="title" colspan="2"><span><?=T('Options')?></span></td>
-	</tr>
-	<tr>
-	  <td id="desc"><span><?=T('Format:')?></span></td>
-	  <td id="content"><select id="template">
-	                     <option value="bb_dark" selected="selected">phpBB <?=T('Dark')?></option>
-			     <option value="bb_light">phpBB <?=T('Light')?></option>
-			     <option value="plain"><?=T('Plain text')?></option>
-			   </select>
-	  </td>
-	</tr>
-	<tr>
+          <td id="title" colspan="2"><span><?=T('Options')?></span></td>
+        </tr>
+        <tr>
+          <td id="desc"><span><?=T('Format:')?></span></td>
+          <td id="content"><select id="template">
+                 <option value="bb_dark" selected="selected">phpBB <?=T('Dark')?></option>
+                 <option value="bb_light">phpBB <?=T('Light')?></option>
+                 <option value="smf_dark">SMF <?=T('Dark')?></option>
+                 <option value="smf_light">SMF <?=T('Light')?></option>
+                 <option value="plain"><?=T('Plain text')?></option>
+               </select>
+          </td>
+        </tr>
+        <tr>
 	  <td id="desc"><span><?=T('Show:')?></span></td>
 	  <td id="content"><select id="show">
 	                     <option value="nothing" selected="selected"><?=T('Nothing')?></option>

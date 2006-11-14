@@ -62,7 +62,7 @@ function stripTags(tex)
   return text;
 }
 
-function parseBBCode(text_)
+function parseCode(text_, forum)
 {
   var text = stripTags(text_);
 
@@ -86,13 +86,27 @@ function parseBBCode(text_)
   var ftext = '';
   positions = new Array(0, 0, 0);
   keys    = new Array('<span style="color: ', '<span style="font-size: ', '<a href="');
-  keysend = new Array('">', 'px">', '">');
+  if (forum == 'bb')
+  {
+    keysend = new Array('">', 'px">', '">');
+  }
+  else if (forum == 'smf')
+  {
+    keysend = new Array('">', '">', '">');
+  }
   lengths = new Array(7, 6, 5);
   
   while (true)
   {
     positions[0] = text.search(/\[COLOR\=.*\].*\[\/COLOR\]/gi);
-    positions[1] = text.search(/\[SIZE\=.*\].*\[\/SIZE\]/gi);
+    if (forum == 'bb')
+    {
+      positions[1] = text.search(/\[SIZE\=.*\].*\[\/SIZE\]/gi);
+    }
+    else if (forum == 'smf')
+    {
+      positions[1] = text.search(/\[SIZE\=.*pt\].*\[\/SIZE\]/gi);
+    }
     positions[2] = text.search(/\[URL\=.*\].*\[\/URL\]/gi);
 
 

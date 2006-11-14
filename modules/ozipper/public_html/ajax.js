@@ -70,9 +70,11 @@ function AJAXResponse()
 {
   if (http.readyState == 4)
   {
-//    if (!checkError(http.responseText.charAt(0)))
-//    {
+    if (!checkError(http.responseText.charAt(0)))
+    {
+      var style = HTMLObj('template').value;
       var text = http.responseText.substring(1);
+      
       if (HTMLObj('align').value == 'center')
       {
         HTMLObj('compactado').value = '[center]' + text + '[/center]';
@@ -82,7 +84,7 @@ function AJAXResponse()
         HTMLObj('compactado').value = text;
       }
 
-      if (HTMLObj('template').value == 'bb_dark')
+      if (style == 'bb_dark' || style == 'smf_dark')
       {
         HTMLObj('wysiwyg').className = 'wysiwyg_dark';
       }
@@ -92,7 +94,7 @@ function AJAXResponse()
       }
       format = HTMLObj('template').value;
       compactadoChange();
-//    }
+    }
     ShowWait(false);
   }
 }
