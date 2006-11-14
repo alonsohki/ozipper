@@ -1,7 +1,6 @@
 <?
   require_once('lang/main.php');
   $lang = getLang();
-  require_once('lang/' . $lang);
 
   /* Almacenamos en la cookie el idioma seleccionado */
   $p = strpos($lang, '.php');
@@ -10,6 +9,14 @@
     $langt = substr($lang, 0, $p);
     setcookie('lang', $langt, time() + (86400 * 7), '/', 'ozipper.net');
   }
+
+  if (!isset($_GET['lang']))
+  {
+    header('Location: /?lang=' . $langt);
+    exit();
+  }
+
+  require_once('lang/' . $lang);
 
   function isl($l)
   {
