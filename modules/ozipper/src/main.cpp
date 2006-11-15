@@ -28,18 +28,20 @@ public:
 
       if (http.POST("report") == "" || http.POST("lang") == "")
       {
-	printf("1Empty report or lang variables");
+        printf("1Empty report or lang variables");
       }
       else if (http.POST("template") == "")
       {
-	printf("2Unable to find template");
+        printf("2Unable to find template");
       }
       else
       {
         LanguageTemplate tpl(http.POST("lang"));
-        CreateXML(tpl.Parse(http.POST("report")), xml, http);
-	xmlDoc * res = XSLParse(xml.str().c_str(), "standard");
-	XSLDecorate(res, http.POST("template"));
+        const ReportData &rdata = tpl.Parse(http.POST("report"));
+        
+        CreateXML(rdata, xml, http);
+        xmlDoc * res = XSLParse(xml.str().c_str(), "standard");
+        XSLDecorate(res, http.POST("template"));
       }
     }
     catch (Exception &e)
@@ -100,7 +102,7 @@ public:
            "      <crystal>0</crystal>\n"
            "      <deuterium>0</deuterium>\n"
            "    </nullresources>\n"
-	   "  </extra>\n\n";
+     "  </extra>\n\n";
     
     /* Escribimos el node-set de traducción */
     if (http.POST("outputlang") != "")
@@ -170,15 +172,15 @@ public:
       xml << "      <techs>\n";
       if (http.POST("techs") == "1")
       {
-	xml << "        <weapons>" << player->GetWeapons() << "</weapons>\n";
-	xml << "        <shields>" << player->GetShield() << "</shields>\n";
-	xml << "        <armour>" << player->GetArmour() << "</armour>\n";
+        xml << "        <weapons>" << player->GetWeapons() << "</weapons>\n";
+        xml << "        <shields>" << player->GetShield() << "</shields>\n";
+        xml << "        <armour>" << player->GetArmour() << "</armour>\n";
       }
       else
       {
-	xml << "        <weapons>XXX</weapons>\n";
-	xml << "        <shields>XXX</shields>\n";
-	xml << "        <armour>XXX</armour>\n";
+        xml << "        <weapons>XXX</weapons>\n";
+        xml << "        <shields>XXX</shields>\n";
+        xml << "        <armour>XXX</armour>\n";
       }
       xml << "      </techs>\n";
       
@@ -187,40 +189,40 @@ public:
       {
         for (std::map<const std::string, Ship>::const_reverse_iterator s = ShipFactory::getInstance()->GetShips().rbegin();
              s != ShipFactory::getInstance()->GetShips().rend();
-	     s++)
+             s++)
         {
-	  try
-	  {
-	    unsigned int initial = player->GetShipCount((*s).first, 0);
-	    unsigned int lost;
+          try
+          {
+            unsigned int initial = player->GetShipCount((*s).first, 0);
+            unsigned int lost;
 
-	    if (res.rounds > 0)
-	    {
-	      try
-	      {
-	        lost = initial - player->GetShipCount((*s).first, 1);
-	      }
-	      catch (Exception&)
-	      {
-	        lost = initial;
-	      }
-	    }
-	    else
-	    {
-	      lost = 0;
-	    }
-	  
-	    metal += lost * (*s).second.metal;
-	    crystal += lost * (*s).second.crystal;
-	    deuterium += lost * (*s).second.deuterium;
-	  
+            if (res.rounds > 0)
+            {
+              try
+              {
+                lost = initial - player->GetShipCount((*s).first, 1);
+              }
+              catch (Exception&)
+              {
+                lost = initial;
+              }
+            }
+            else
+            {
+              lost = 0;
+            }
+    
+            metal += lost * (*s).second.metal;
+            crystal += lost * (*s).second.crystal;
+            deuterium += lost * (*s).second.deuterium;
+    
             xml << "        <ship>\n";
-	    xml << "          <name>" << (*s).second.name << "</name>\n";
-	    xml << "          <initial>" << initial << "</initial>\n";
-	    xml << "          <lost>" << lost << "</lost>\n";
-	    xml << "        </ship>\n";
-	  }
-	  catch (Exception&) { }
+            xml << "          <name>" << (*s).second.name << "</name>\n";
+            xml << "          <initial>" << initial << "</initial>\n";
+            xml << "          <lost>" << lost << "</lost>\n";
+            xml << "        </ship>\n";
+          }
+          catch (Exception&) { }
         }
       }
       xml << "      </fleet>\n";

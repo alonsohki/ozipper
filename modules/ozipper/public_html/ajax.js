@@ -66,13 +66,26 @@ function checkError(errnum)
   return false;
 }
 
+function SetStyle()
+{
+  format = HTMLObj('template').value;
+
+  if (format == 'bb_dark' || format == 'smf_dark' || format == 'vb_dark')
+  {
+    HTMLObj('wysiwyg').className = 'wysiwyg_dark';
+  }
+  else
+  {
+    HTMLObj('wysiwyg').className = 'wysiwyg_light';
+  }
+}
+
 function AJAXResponse()
 {
   if (http.readyState == 4)
   {
     if (!checkError(http.responseText.charAt(0)))
     {
-      var style = HTMLObj('template').value;
       var text = http.responseText.substring(1);
       
       if (HTMLObj('align').value == 'center')
@@ -84,15 +97,7 @@ function AJAXResponse()
         HTMLObj('compactado').value = text;
       }
 
-      if (style == 'bb_dark' || style == 'smf_dark')
-      {
-        HTMLObj('wysiwyg').className = 'wysiwyg_dark';
-      }
-      else
-      {
-        HTMLObj('wysiwyg').className = 'wysiwyg_light';
-      }
-      format = HTMLObj('template').value;
+      SetStyle();
       compactadoChange();
     }
     ShowWait(false);

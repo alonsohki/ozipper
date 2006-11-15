@@ -57,7 +57,8 @@
 
       function start()
       {
-//        compactadoChange();
+        SetStyle();
+        compactadoChange();
         ShowWait(false);
       }
 
@@ -69,11 +70,15 @@
         var format = getFormat();
         if (format == 'bb_dark' || format == 'bb_light')
         {
-          obj2.innerHTML = parseCode(obj.value, 'bb');
+          obj2.innerHTML = parseCode(obj.value, 'phpBB');
         }
         else if (format == 'smf_dark' || format == 'smf_light')
         {
-          obj2.innerHTML = parseCode(obj.value, 'smf');
+          obj2.innerHTML = parseCode(obj.value, 'SMF');
+        }
+        else if (format == 'vb_dark' || format == 'vb_light')
+        {
+          obj2.innerHTML = parseCode(obj.value, 'VBulletin');
         }
         else
         {
@@ -158,8 +163,13 @@
           <td id="content"><select id="template">
                  <option value="bb_dark" selected="selected">phpBB <?=T('Dark')?></option>
                  <option value="bb_light">phpBB <?=T('Light')?></option>
+                 <option disabled="disabled">--------------------------</option>
                  <option value="smf_dark">SMF <?=T('Dark')?></option>
                  <option value="smf_light">SMF <?=T('Light')?></option>
+                 <option disabled="disabled">--------------------------</option>
+                 <option value="vb_dark">VBulletin <?=T('Dark')?></option>
+                 <option value="vb_light">VBulletin <?=T('Light')?></option>
+                 <option value="" disabled="disabled">--------------------------</option>
                  <option value="plain"><?=T('Plain text')?></option>
                </select>
           </td>

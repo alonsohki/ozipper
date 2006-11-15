@@ -20,10 +20,10 @@
 </xsl:template>
 
 <xsl:template match="xml/attackers/player/name">
-  <xsl:text>[color=#00FF40][b][size=16]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/b]</xsl:text>
+  <xsl:text>[color=#00FF40][b][size=17]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/b]</xsl:text>
 </xsl:template>
 <xsl:template match="xml/defenders/player/name">
-  <xsl:text>[color=#FD8002][b][size=16]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/b]</xsl:text>
+  <xsl:text>[color=#FD8002][b][size=17]</xsl:text><xsl:value-of select="." /><xsl:text>[/size][/b]</xsl:text>
 </xsl:template>
 
 <xsl:template match="xml/attackers/player/coords">

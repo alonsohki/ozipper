@@ -1,3 +1,68 @@
+/* Tipos de foros */
+phpBB = function()
+{
+  this.getName      = function()     { return 'phpBB'; }
+  this.getKeys      = function()     { return new Array('<span style="color: ', '<span style="font-size: ', '<a href="'); }
+  this.getKeysEnd   = function()     { return new Array('">', 'px">', '">'); }
+  this.getKeysClose = function()     { return new Array('</span>', '</span>', '</a>'); }
+  this.searchColor  = function(text) { return text.search(/\[COLOR\=.*\].*\[\/COLOR\]/gi); }
+  this.searchSize   = function(text) { return text.search(/\[SIZE\=.*\].*\[\/SIZE\]/gi); }
+  this.searchUrl    = function(text) { return text.search(/\[URL\=.*\].*\[\/URL\]/gi); }
+}
+
+SMF = function()
+{
+  this.getName      = function()     { return 'SMF'; }
+  this.getKeys      = function()     { return new Array('<span style="color: ', '<span style="font-size: ', '<a href="'); }
+  this.getKeysEnd   = function()     { return new Array('">', '">', '">'); }
+  this.getKeysClose = function()     { return new Array('</span>', '</span>', '</a>'); }
+  this.searchColor  = function(text) { return text.search(/\[COLOR\=.*\].*\[\/COLOR\]/gi); }
+  this.searchSize   = function(text) { return text.search(/\[SIZE\=.*pt\].*\[\/SIZE\]/gi); }
+  this.searchUrl    = function(text) { return text.search(/\[URL\=.*\].*\[\/URL\]/gi); }
+}
+
+VBulletin = function()
+{
+  this.getName      = function()     { return 'VBulletin'; }
+  this.getKeys      = function()     { return new Array('<font color="', '<font size="', '<a href="'); }
+  this.getKeysEnd   = function()     { return new Array('">', '">', '">'); }
+  this.getKeysClose = function()     { return new Array('</font>', '</font>', '</a>'); }
+  this.searchColor  = function(text) { return text.search(/\[COLOR\=.*\].*\[\/COLOR\]/gi); }
+  this.searchSize   = function(text) { return text.search(/\[SIZE\=.*\].*\[\/SIZE\]/gi); }
+  this.searchUrl    = function(text) { return text.search(/\[URL\=.*\].*\[\/URL\]/gi); }
+}
+
+/* Gestor de tipos de foros */
+forumManager = function()
+{
+  this.forums = new Array();
+
+  this.addForum = function(forum)
+  {
+    this.forums[this.forums.length] = forum;
+  }
+
+  this.getForum = function(name)
+  {
+    for (var i = 0; i < this.forums.length; i++)
+    {
+      if (this.forums[i].getName() == name)
+      {
+        return this.forums[i];
+      }
+    }
+
+    return -1;
+  }
+}
+
+/* Generamos los tipos de foros */
+var fmanager = new forumManager();
+fmanager.addForum(new phpBB());
+fmanager.addForum(new SMF());
+fmanager.addForum(new VBulletin());
+
+/* Procesamos caracteres especiales para evitar ejecución html en el 'preview' */
 function stripTags(tex)
 {
   var text = '';
@@ -8,22 +73,22 @@ function stripTags(tex)
     {
       case '<':
         text += '&lt;';
-	break;
+        break;
       case '>':
         text += '&gt;';
-	break;
+        break;
       case '&':
         text += '&amp;';
-	break;
+        break;
       case '"':
         text += '&quot;';
-	break;
+        break;
       case "'":
         text += '&#039;';
-	break;
+        break;
       case '\n':
         text += '<br />';
-	break;
+        break;
       case 'á':
         text += '&aacute;';
         break;
@@ -64,6 +129,7 @@ function stripTags(tex)
 
 function parseCode(text_, forum)
 {
+  var forum = fmanager.getForum(forum);
   var text = stripTags(text_);
 
   /* Reemplazamos negritas */
@@ -85,29 +151,16 @@ function parseCode(text_, forum)
   /* Buscamos colores, tamaños, urls */
   var ftext = '';
   positions = new Array(0, 0, 0);
-  keys    = new Array('<span style="color: ', '<span style="font-size: ', '<a href="');
-  if (forum == 'bb')
-  {
-    keysend = new Array('">', 'px">', '">');
-  }
-  else if (forum == 'smf')
-  {
-    keysend = new Array('">', '">', '">');
-  }
+ 
+  keys = forum.getKeys();
+  keysend = forum.getKeysEnd();
   lengths = new Array(7, 6, 5);
   
   while (true)
   {
-    positions[0] = text.search(/\[COLOR\=.*\].*\[\/COLOR\]/gi);
-    if (forum == 'bb')
-    {
-      positions[1] = text.search(/\[SIZE\=.*\].*\[\/SIZE\]/gi);
-    }
-    else if (forum == 'smf')
-    {
-      positions[1] = text.search(/\[SIZE\=.*pt\].*\[\/SIZE\]/gi);
-    }
-    positions[2] = text.search(/\[URL\=.*\].*\[\/URL\]/gi);
+    positions[0] = forum.searchColor(text);
+    positions[1] = forum.searchSize(text);
+    positions[2] = forum.searchUrl(text);
 
 
     /* Buscamos la primera coincidencia */
@@ -169,9 +222,10 @@ function parseCode(text_, forum)
   text = ftext;
 
   /* Cerramos los tags anteriores */
-  text = text.replace(/\[\/COLOR\]/gi, '</span>');
-  text = text.replace(/\[\/SIZE\]/gi, '</span>');
-  text = text.replace(/\[\/URL\]/gi, '</a>');
+  var keysClose = forum.getKeysClose();
+  text = text.replace(/\[\/COLOR\]/gi, keysClose[0]);
+  text = text.replace(/\[\/SIZE\]/gi, keysClose[1]);
+  text = text.replace(/\[\/URL\]/gi, keysClose[2]);
 
   return text;
 }
