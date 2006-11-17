@@ -63,13 +63,18 @@ fmanager.addForum(new SMF());
 fmanager.addForum(new VBulletin());
 
 /* Procesamos caracteres especiales para evitar ejecución html en el 'preview' */
-function stripTags(tex)
+function stripTags(str)
 {
   var text = '';
+  var specialchars = new htmlspecialchars();
   
-  for (i = 0; i < tex.length; i++)
+  for (i = 0; i < str.length; i++)
   {
-    switch (tex.charAt(i))
+    text += specialchars.Transform(str.charAt(i));
+  }
+
+  return text;
+/*    switch (tex.charAt(i))
     {
       case '<':
         text += '&lt;';
@@ -121,10 +126,7 @@ function stripTags(tex)
         break;
       default:
         text += tex.charAt(i);
-    }
-  }
-
-  return text;
+    }*/
 }
 
 function parseCode(text_, forum)

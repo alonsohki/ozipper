@@ -75,14 +75,18 @@
   ----------------------------
   Solucionado el bug de las flotas múltiples de un jugador en SAC.
 
-* 14/09/2006 - ryden@bhats.org
+* 14/11/2006 - ryden@bhats.org
   ----------------------------
   Creado soporte para foros SMF.
 
-* 14/09/2006 - ryden@bhats.org
+* 14/11/2006 - ryden@bhats.org
   ----------------------------
   Soporte de idiomas en adsense.
 
-* 15/09/2006 - ryden@bhats.org
+* 15/11/2006 - ryden@bhats.org
   ----------------------------
   Creado soporte para foros VBulletin.
+
+* 17/11/2006 - ryden@bhats.org
+  ----------------------------
+  Agregado el soporte para htmlspecialchars.js

@@ -1,12 +1,14 @@
 include ../Makefile.inc
 
 INSTALL=`which install`
+RM=/usr/bin/rm
 
 all: build
 
-build:
+build: htmlspecialchars.js
 
 clean:
+	${RM} -f htmlspecialchars.js
 
 install:
 	@for i in `ls . --color=no | grep -v CVS | grep -v Makefile | grep -v lang` ; do \
@@ -17,3 +19,6 @@ install:
 		echo ${INSTALL} -o ${OWNER} -g ${GROUP} --mode 0440 lang/$$i ${TARGET_DIR}/public_html/lang/ ; \
 		${INSTALL} -o ${OWNER} -g ${GROUP} --mode 0440 lang/$$i ${TARGET_DIR}/public_html/lang/ ; \
 	done
+
+htmlspecialchars.js:
+	../tools/htmlspecialchars/htmlspecialchars ../tools/htmlspecialchars/entities-latin1.dtd > $@

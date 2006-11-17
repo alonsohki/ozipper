@@ -1,6 +1,6 @@
 include Makefile.inc
 
-SUBDIRS=src lang templates public_html
+SUBDIRS=src tools lang templates public_html
 INSTALL=`which install`
 
 all: build

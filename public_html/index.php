@@ -47,6 +47,7 @@
     <script type="text/javascript"><!--
       var errors = new Array(<?=$langarr['ajax_errors_array']?>);
     // --></script>
+    <script type="text/javascript" src="htmlspecialchars.js"></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript" src="ajax.js"></script>
     <script type="text/javascript"><!--
