@@ -10,7 +10,7 @@ build: htmlspecialchars.js
 clean:
 	${RM} -f htmlspecialchars.js
 
-install:
+install: build
 	@for i in `ls . --color=no | grep -v CVS | grep -v Makefile | grep -v lang` ; do \
 		echo ${INSTALL} -o ${OWNER} -g ${GROUP} --mode 0440 $$i ${TARGET_DIR}/public_html/ ; \
 		${INSTALL} -o ${OWNER} -g ${GROUP} --mode 0440 $$i ${TARGET_DIR}/public_html/ ; \

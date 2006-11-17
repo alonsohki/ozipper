@@ -23,6 +23,8 @@ ${PROGRAM}: entities-latin1.dtd ${OBJS}
 clean:
 	${RM} -f *.o entities-latin1.dtd
 
+install: build
+
 main.o:	main.c
 
 entities-latin1.dtd:

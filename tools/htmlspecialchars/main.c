@@ -107,6 +107,11 @@ int main(int argc, char *argv[])
   addConv('\n', "<br />");
 
 
+  puts("/*");
+  puts(" * Archivo generado automáticamente por 'htmlspecialchars'");
+  puts(" * Programado por Alberto Alonso, webmaster@ozipper.net");
+  puts(" */");
+  puts("");
   puts("htmlspecialchars = function()");
   puts("{");
   puts("  var htmlspecialchars_tab = new Array(");
