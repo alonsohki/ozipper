@@ -91,15 +91,15 @@ Main = function()
     poststr = MakePoststr();
 
     style.Working(true);
-    result = ajax.Request(poststr);
+    data = ajax.Request(poststr);
     style.Working(false);
 
-    if (checkError(result[0].charAt(0)))
+    if (checkError(data[0].charAt(0)))
     {
       return false;
     }
 
-    text = result[0].substring(1);
+    text = data[0].substring(1);
 
     if (style.GetTemplate() != 'plain' && $('align').value == 'center')
     {

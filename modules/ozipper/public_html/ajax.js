@@ -48,7 +48,7 @@ Ajax = function(server_)
     http.setRequestHeader("Connection", "close");
     http.send(poststr);
 
-    ret = new Array(http.responseText, http.responseXML);
+    ret = new Array(http.responseText, null);
 
     return ret;
   }
