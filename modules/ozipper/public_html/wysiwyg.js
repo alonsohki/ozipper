@@ -1,7 +1,7 @@
 /* Tipos de foros */
 phpBB = function()
 {
-  this.getName      = function()     { return 'phpBB'; }
+  this.getName      = function()     { return 'bb'; }
   this.getKeys      = function()     { return new Array('<span style="color: ', '<span style="font-size: ', '<a href="'); }
   this.getKeysEnd   = function()     { return new Array('">', 'px">', '">'); }
   this.getKeysClose = function()     { return new Array('</span>', '</span>', '</a>'); }
@@ -12,7 +12,7 @@ phpBB = function()
 
 SMF = function()
 {
-  this.getName      = function()     { return 'SMF'; }
+  this.getName      = function()     { return 'smf'; }
   this.getKeys      = function()     { return new Array('<span style="color: ', '<span style="font-size: ', '<a href="'); }
   this.getKeysEnd   = function()     { return new Array('">', '">', '">'); }
   this.getKeysClose = function()     { return new Array('</span>', '</span>', '</a>'); }
@@ -23,7 +23,7 @@ SMF = function()
 
 VBulletin = function()
 {
-  this.getName      = function()     { return 'VBulletin'; }
+  this.getName      = function()     { return 'vb'; }
   this.getKeys      = function()     { return new Array('<font color="', '<font size="', '<a href="'); }
   this.getKeysEnd   = function()     { return new Array('">', '">', '">'); }
   this.getKeysClose = function()     { return new Array('</font>', '</font>', '</a>'); }
@@ -74,65 +74,17 @@ function stripTags(str)
   }
 
   return text;
-/*    switch (tex.charAt(i))
-    {
-      case '<':
-        text += '&lt;';
-        break;
-      case '>':
-        text += '&gt;';
-        break;
-      case '&':
-        text += '&amp;';
-        break;
-      case '"':
-        text += '&quot;';
-        break;
-      case "'":
-        text += '&#039;';
-        break;
-      case '\n':
-        text += '<br />';
-        break;
-      case 'á':
-        text += '&aacute;';
-        break;
-      case 'é':
-        text += '&eacute;';
-        break;
-      case 'í':
-        text += '&iacute;';
-        break;
-      case 'ó':
-        text += '&oacute;';
-        break;
-      case 'ú':
-        text += '&uacute;';
-        break;
-      case 'Á':
-        text += '&Aacute;';
-        break;
-      case 'É':
-        text += '&Eacute;';
-        break;
-      case 'Í':
-        text += '&Iacute;';
-        break;
-      case 'Ó':
-        text += '&Oacute;';
-        break;
-      case 'Ú':
-        text += '&Uacute;';
-        break;
-      default:
-        text += tex.charAt(i);
-    }*/
 }
 
 function parseCode(text_, forum)
 {
-  var forum = fmanager.getForum(forum);
   var text = stripTags(text_);
+  var forum = fmanager.getForum(forum);
+
+  if (forum == -1)
+  {
+    return text;
+  }
 
   /* Reemplazamos negritas */
   text = text.replace(/\[B\]/gi, '<b>');

@@ -50,48 +50,13 @@
     <script type="text/javascript" src="htmlspecialchars.js"></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript" src="ajax.js"></script>
+    <script type="text/javascript" src="style.js"></script>
+    <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript"><!--
-      function HTMLObj(id)
-      {
-        return document.getElementById(id);
-      }
-
+      var main = new Main();
       function start()
       {
-        SetStyle();
-        compactadoChange();
-        ShowWait(false);
-      }
-
-      function compactadoChange()
-      {
-        var obj = HTMLObj('compactado');
-        var obj2 = HTMLObj('wysiwyg');
-
-        var format = getFormat();
-        if (format == 'bb_dark' || format == 'bb_light')
-        {
-          obj2.innerHTML = parseCode(obj.value, 'phpBB');
-        }
-        else if (format == 'smf_dark' || format == 'smf_light')
-        {
-          obj2.innerHTML = parseCode(obj.value, 'SMF');
-        }
-        else if (format == 'vb_dark' || format == 'vb_light')
-        {
-          obj2.innerHTML = parseCode(obj.value, 'VBulletin');
-        }
-        else
-        {
-          obj2.innerHTML = stripTags(obj.value);
-        }
-      }
-
-      function bselect()
-      {
-        var obj = HTMLObj('compactado');
-        obj.focus();
-        obj.select();
+        main.Start();
       }
     // --></script>
   </head>
@@ -108,7 +73,7 @@
               </tr>
               <tr>
                 <td id="desc"><span><?=T('Select your language:')?></span></td>
-                <td id="content"><select name="lang" onchange="HTMLObj('langchange').submit();">
+                <td id="content"><select name="lang" id="lang">
 	                           <option value="en"<?=isl('en')?>><?=T('English')?></option>
 	                           <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
                              <option value="de"<?=isl('de')?>><?=T('German')?></option>
@@ -127,7 +92,7 @@
     </div>
     
     <div id="content">
-    <form action="" method="post" accept-charset="UTF-8" onsubmit="return AJAXRequest();">
+    <form action="" method="post" accept-charset="UTF-8" id="mainform">
     <table>
       <tr>
         <td id="informetd">
@@ -138,15 +103,15 @@
         <td id="compactadotd">
           <div id="result">
             <span><?=T('Result:')?></span><br />
-            <textarea id="compactado" onkeyup="compactadoChange();" rows="1" cols="1"></textarea>
+            <textarea id="compactado" rows="1" cols="1"></textarea>
           </div>
           <img src="busy.gif" id="busy" alt="Please wait" />
         </td>
       </tr>
       <tr>
         <td id="informetd"><input type="submit" value="<?=T('Process report')?>" id="submit" />&nbsp;
-                           <input type="reset" value="<?=T('Reset')?>" onclick="HTMLObj('wysiwyg').innerHTML=''" /></td>
-        <td id="compactadotd" align="center"><input type="button" onclick="bselect();" value="<?=T('Select text')?>" /></td>
+                           <input type="reset" value="<?=T('Reset')?>" id="reset" /></td>
+        <td id="compactadotd" align="center"><input type="button" id="selecttext" value="<?=T('Select text')?>" /></td>
       </tr>
     </table>
     </form>
@@ -162,76 +127,81 @@
         <tr>
           <td id="desc"><span><?=T('Format:')?></span></td>
           <td id="content"><select id="template">
-                 <option value="bb_dark" selected="selected">phpBB <?=T('Dark')?></option>
-                 <option value="bb_light">phpBB <?=T('Light')?></option>
-                 <option disabled="disabled">--------------------------</option>
-                 <option value="smf_dark">SMF <?=T('Dark')?></option>
-                 <option value="smf_light">SMF <?=T('Light')?></option>
-                 <option disabled="disabled">--------------------------</option>
-                 <option value="vb_dark">VBulletin <?=T('Dark')?></option>
-                 <option value="vb_light">VBulletin <?=T('Light')?></option>
-                 <option value="" disabled="disabled">--------------------------</option>
-                 <option value="plain"><?=T('Plain text')?></option>
+                             <option value="bb" selected="selected">phpBB</option>
+                             <option value="smf">SMF</option>
+                             <option value="vb">VBulletin</option>
+                             <option value="plain"><?=T('Plain text')?></option>
+                           </select>
+          </td>
+        </tr>
+        <tr>
+          <td id="desc"><span><?=T('Background:')?></span></td>
+          <td id="content"><select id="background">
+                 <option value="dark" selected="selected"><?=T('Dark')?></option>
+                 <option value="light"><?=T('Light')?></option>
                </select>
           </td>
         </tr>
         <tr>
-	  <td id="desc"><span><?=T('Show:')?></span></td>
-	  <td id="content"><select id="show">
-	                     <option value="nothing" selected="selected"><?=T('Nothing')?></option>
-		             <option value="coords"><?=T('Coordinates')?></option>
-		             <option value="techs"><?=T('Technologies')?></option>
-		             <option value="all"><?=T('All')?></option>
-	                   </select>
-	  </td>
-	</tr>
-	<tr>
-	  <td id="desc"><span><?=T('Align:')?></span></td>
-	  <td id="content"><select id="align">
-	                     <option value="left" selected="selected"><?=T('Left')?></option>
-			     <option value="center"><?=T('Center')?></option>
-	                   </select>
-	  </td>
-	</tr>
-        <tr>
-          <td id="desc"><span><?=T('Output language:')?></span></td>
-          <td id="content"><select id="outputlang">
-			     <option value="en"<?=isl('en')?>><?=T('English')?></option>
-			     <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
-			     <option value="de"<?=isl('de')?>><?=T('German')?></option>
+          <td id="desc"><span><?=T('Show:')?></span></td>
+          <td id="content"><select id="show">
+                             <option value="nothing" selected="selected"><?=T('Nothing')?></option>
+                             <option value="coords"><?=T('Coordinates')?></option>
+                             <option value="techs"><?=T('Technologies')?></option>
+                             <option value="all"><?=T('All')?></option>
                            </select>
           </td>
         </tr>
-	<tr>
-	  <td id="desc"><span><?=T('Individual units:')?></span></td>
-	  <td id="content"><input type="checkbox" id="individual" checked="checked" /></td>
-	</tr>
-      </table>
-      </td><td id="google">
+        <tr>
+          <td id="desc"><span><?=T('Align:')?></span></td>
+          <td id="content"><select id="align">
+                             <option value="left" selected="selected"><?=T('Left')?></option>
+                             <option value="center"><?=T('Center')?></option>
+                           </select>
+          </td>
+        </tr>
+        <tr>
+          <td id="desc"><span><?=T('Output language:')?></span></td>
+          <td id="content"><select id="outputlang">
+                             <option value="en"<?=isl('en')?>><?=T('English')?></option>
+                             <option value="es"<?=isl('es')?>><?=T('Spanish')?></option>
+                             <option value="de"<?=isl('de')?>><?=T('German')?></option>
+                           </select>
+          </td>
+        </tr>
+        <tr>
+          <td id="desc"><span><?=T('Individual units:')?></span></td>
+          <td id="content"><input type="checkbox" id="individual" checked="checked" /></td>
+        </tr>
+      </table><!-- <table id="optstable"> -->
+      </td>
+
+      <td id="google">
       <div>
-<script type="text/javascript"><!--
-google_ad_client = "pub-1709658272618910";
-google_ad_width = 468;
-google_ad_height = 60;
-google_ad_format = "468x60_as";
-google_ad_type = "text_image";
-google_ad_channel ="";
-google_color_border = "EBECF5";
-google_color_bg = "F0F1F7";
-google_color_link = "0000FF";
-google_color_text = "000000";
-google_color_url = "008000";
-//--></script>
-<script type="text/javascript"
-  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-  </script></div>
+        <script type="text/javascript"><!--
+          google_ad_client = "pub-1709658272618910";
+          google_ad_width = 468;
+          google_ad_height = 60;
+          google_ad_format = "468x60_as";
+          google_ad_type = "text_image";
+          google_ad_channel ="";
+          google_color_border = "EBECF5";
+          google_color_bg = "F0F1F7";
+          google_color_link = "0000FF";
+          google_color_text = "000000";
+          google_color_url = "008000";
+        //--></script>
+        <script type="text/javascript"
+          src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script></div>
       </td></tr>
       </table>
-    </div>
+    </div> <!-- <div id="options"> -->
 
     <div id="preview">
       <span id="desc"><?=T('Preview:')?></span>
       <div id="wysiwyg" class="wysiwyg_dark"></div>
     </div>
+
   </body>
 </html>

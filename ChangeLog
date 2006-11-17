@@ -1,5 +1,10 @@
 * 17/11/2006 - ryden@bhats.org
   ----------------------------
+  Reescrito el código fuente JavaScript orientándolo
+  a objetos.
+
+* 17/11/2006 - ryden@bhats.org
+  ----------------------------
   Invertido el órden de este fichero.
   Varios arreglos en los Makefile.
 
