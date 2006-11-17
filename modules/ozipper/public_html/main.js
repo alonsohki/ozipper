@@ -12,7 +12,7 @@ Main = function()
   {
     style = new Style($('template').value, $('background').value);
     style.Update();
-    ajax = new Ajax('/cgi-bin/ozipper.cgi');
+    ajax = new Ajax('/cgi-bin/ozipper.cgi', function(data) { main.ReadyRequest(data); });
 
     style.Working(false);
 
@@ -82,16 +82,8 @@ Main = function()
     return false;
   }
 
-
-  /*
-   * TODO: Esto tiene que cambiar por un método de comunicación XML cuanto antes.
-   */
-  this.Request = function()
+  this.ReadyRequest = function(data)
   {
-    poststr = MakePoststr();
-
-    style.Working(true);
-    data = ajax.Request(poststr);
     style.Working(false);
 
     if (checkError(data[0].charAt(0)))
@@ -111,6 +103,18 @@ Main = function()
     style.Update();
 
     return true;
+  }
+
+
+  /*
+   * TODO: Esto tiene que cambiar por un método de comunicación XML cuanto antes.
+   */
+  this.Request = function()
+  {
+    poststr = MakePoststr();
+
+    style.Working(true);
+    ajax.Request(poststr);
   }
 }
 
