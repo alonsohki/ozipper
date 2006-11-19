@@ -1,6 +1,5 @@
 <?
   $langarr = array(
-                   'ajax_errors_array'          => "'El informe tiene un formato desconocido', 'Error interno: no se encontró el estilo solicitado'",
                    'Spanish'                    => 'Castellano',
                    'English'                    => 'Inglés',
 		   'German'			=> 'Alemán',

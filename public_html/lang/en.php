@@ -1,7 +1,5 @@
 <?
   $langarr = array(
-                   'ajax_errors_array'			=> "'Unknown report format', 'Internal failure: Couldn\\'t find the selected style'",
-
 		   'OGame zipper'		=> 'OGame zipper - A tool for converting combat reports for the forums',
                    'meta_description'           => 'OGame combat report zipper',
                    'meta_keywords'              => 'ogame,zipper,combat,report,converter,game,online,mmorpg',

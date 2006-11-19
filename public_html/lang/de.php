@@ -1,6 +1,5 @@
 <?
   $langarr = array(
-                   'ajax_errors_array'          => "'Unbekanntes Kampfbericht Format', 'Konnte den gewählten skin nicht finden'",
                    'Spanish'                    => 'Spanisch',
                    'English'                    => 'Englisch',
 		   'German'			=> 'Deutsch',

@@ -1,5 +1,9 @@
 * 19/11/2006 - ryden@bhats.org
   ----------------------------
+  Eliminado el viejo sistema de errores AJAX.
+
+* 19/11/2006 - ryden@bhats.org
+  ----------------------------
   Implementada comunicación AJAX XML.
 
 * 17/11/2006 - ryden@bhats.org

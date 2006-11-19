@@ -57,7 +57,8 @@ public:
     }
     catch (Exception &e)
     {
-      Error(output, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
+//      Error(output, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
+      Error(output, "Invalid combat report format");
     }
 
     std::cout << output.str();
