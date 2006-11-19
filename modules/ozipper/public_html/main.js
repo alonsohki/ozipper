@@ -72,11 +72,12 @@ Main = function()
     return poststr;
   }
 
-  function checkError(errnum)
+  function checkError(report)
   {
-    if (errnum != 0)
+    errortag = report.getElementsByTagName('error');
+    if (errortag.length > 0)
     {
-      alert(errors[errnum - 1]);
+      alert(errortag[0].firstChild.data);
       return true;
     }
     return false;
@@ -85,13 +86,21 @@ Main = function()
   this.ReadyRequest = function(data)
   {
     style.Working(false);
+    report = data[1].documentElement;
 
-    if (checkError(data[0].charAt(0)))
+    if (checkError(report))
     {
       return false;
     }
+    
+    textNode = report.getElementsByTagName('report');
+    if (textNode.length == 0)
+    {
+      alert('Internal error');
+      return false;
+    }
 
-    text = data[0].substring(1);
+    text = textNode[0].firstChild.data;
 
     if (style.GetTemplate() != 'plain' && $('align').value == 'center')
     {

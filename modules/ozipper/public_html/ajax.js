@@ -40,7 +40,7 @@ Ajax = function(server_, callback_)
 
     if (http.readyState == 4)
     {
-      data = new Array(http.responseText, null);
+      data = new Array(http.responseText, http.responseXML);
       callback(data);
     }
   }

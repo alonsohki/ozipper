@@ -4,6 +4,7 @@
 #include "http.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include <libxml/parser.h>
 #include <libxslt/xslt.h>
 #include <libxslt/transform.h>
@@ -17,6 +18,7 @@ public:
   static int main(int argc, char *argv[], const char *env[])
   {
     chdir("../..");
+    std::ostringstream output;
 
     try
     {
@@ -24,50 +26,76 @@ public:
 
       Http http(env);
 
-      printf("Content-type: text/html; charset=UTF-8\r\n\r\n");
+      output << "Content-type: text/xml; charset=UTF-8\r\n\r\n";
 
       if (http.POST("report") == "" || http.POST("lang") == "")
       {
-        printf("1Empty report or lang variables");
+        Error(output, "Empty report or lang variables");
       }
       else if (http.POST("template") == "")
       {
-        printf("2Unable to find template");
+        Error(output, "Unable to find the required template");
       }
       else
       {
         LanguageTemplate tpl(http.POST("lang"));
         const ReportData &rdata = tpl.Parse(http.POST("report"));
+        int xmlLength;
+        xmlChar *xmlDocument;
         
         CreateXML(rdata, xml, http);
-        xmlDoc * res = XSLParse(xml.str().c_str(), "standard");
-        XSLDecorate(res, http.POST("template"));
+        xmlDoc * tmpxml = XSLParse(xml.str().c_str(), "standard");
+        xmlDoc * res = XSLDecorate(tmpxml, http.POST("template"));
+        xmlDocDumpMemory(res, &xmlDocument, &xmlLength);
+
+        output << (char *)xmlDocument;
+
+        xmlFree(xmlDocument);
+        xmlFreeDoc(tmpxml);
+        xmlFreeDoc(res);
       }
     }
     catch (Exception &e)
     {
-      printf("1Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
-//      fprintf(stderr, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
+      Error(output, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
     }
+
+    std::cout << output.str();
+
+    Cleanup();
 
     return 0;
   }
 
-  static void XSLDecorate(xmlDoc *xml, const std::string& tpl)
+  static void Error(std::ostringstream& output, const char *errstr, ...)
+  {
+    va_list vl;
+    char buffer[256];
+
+    va_start(vl, errstr);
+    vsnprintf(buffer, 256, errstr, vl);
+    va_end(vl);
+    output << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    output << "<xml>\n";
+    output << "  <error>" << buffer << "</error>\n";
+    output << "</xml>\n";
+  }
+
+  static void Cleanup()
+  {
+    xsltCleanupGlobals();
+    xmlCleanupParser();
+  }
+
+  static xmlDoc * XSLDecorate(xmlDoc *xml, const std::string& tpl)
   {
     std::string path = "templates/decoration/" + tpl + ".xsl";
 
     xsltStylesheet *xsl = xsltParseStylesheetFile((const xmlChar *)path.c_str());
     xmlDoc *res = xsltApplyStylesheet(xsl, xml, 0);
 
-    printf("0");
-    xsltSaveResultToFile(stdout, res, xsl);
-
     xsltFreeStylesheet(xsl);
-    xmlFreeDoc(res);
-    xmlFreeDoc(xml);
-    xsltCleanupGlobals();
-    xmlCleanupParser();
+    return res;
   }
 
   static xmlDoc * XSLParse(const char *xml_, const std::string& tpl)

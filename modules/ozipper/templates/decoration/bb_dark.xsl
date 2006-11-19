@@ -3,7 +3,9 @@
 
 <xsl:template match="/">
   <xml>
-  <xsl:apply-templates />
+    <report>
+      <xsl:apply-templates />
+    </report>
   </xml>
 </xsl:template>
 

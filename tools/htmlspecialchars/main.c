@@ -26,7 +26,7 @@ static void addConv(const unsigned char code, const char *to)
  */
 static void initConv()
 {
-  memset(tab, 0, sizeof(const char *) * 256);
+  memset(tab, 0, sizeof(char *) * 256);
 }
 
 /*
@@ -36,7 +36,7 @@ static void endConv()
 {
   int i;
   
-  for (i = 0; i < 256; i++)
+  for (i = 255; i >= 0; i--)
   {
     if (tab[i] != 0)
     {
