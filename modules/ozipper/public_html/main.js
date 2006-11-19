@@ -116,9 +116,6 @@ Main = function()
   }
 
 
-  /*
-   * TODO: Esto tiene que cambiar por un método de comunicación XML cuanto antes.
-   */
   this.Request = function()
   {
     poststr = MakePoststr();
