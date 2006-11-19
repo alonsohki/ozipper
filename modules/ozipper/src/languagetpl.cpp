@@ -6,6 +6,7 @@
 #include "exception.h"
 #include "languagetpl.h"
 #include "shipfactory.h"
+#include "ship.h"
 
 int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, const char *regexName, bool match_error)
                                 throw(Exception)
@@ -163,25 +164,25 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
       
       Player *player = (Player *)&Player::GetPlayer(
             name,									/* name */
-	    role == m_roles[0] ? "attacker" : "defender",                               /* role */
-	    std::string().append(report.c_str() + ovector[8], ovector[9] - ovector[8]), /* coords */
-	    IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* weapons */
-	    IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]),		/* shield */
-	    IntRegex(report.c_str() + ovector[16], ovector[17] - ovector[16]),		/* armour */
-	    true);
+            role == m_roles[0] ? "attacker" : "defender",                               /* role */
+            std::string().append(report.c_str() + ovector[8], ovector[9] - ovector[8]), /* coords */
+            IntRegex(report.c_str() + ovector[12], ovector[13] - ovector[12]),		/* weapons */
+            IntRegex(report.c_str() + ovector[14], ovector[15] - ovector[14]),		/* shield */
+            IntRegex(report.c_str() + ovector[16], ovector[17] - ovector[16]),		/* armour */
+            true);
 
       /* Si no tiene flota ni defensa, rc == 9 */
       if (rc > 9)
       {
-	std::vector<std::string> ship_names;
-	std::vector<unsigned int> ship_counts;
+        std::vector<std::string> ship_names;
+        std::vector<unsigned int> ship_counts;
 	
         ParseShips(report.c_str(), ovector[24], ovector[25], ovector[28], ovector[29], ship_names, ship_counts);
         x = 0;
         for (std::vector<std::string>::const_iterator i = ship_names.begin(); i != ship_names.end(); i++)
         {
-	  player->CreateShip(*i, ship_counts[x], 0);
-	  x++;
+          player->CreateShip(*i, ship_counts[x], 0);
+          x++;
         }
       }
     }
@@ -227,8 +228,8 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
         int x;
         std::vector<std::string> ship_names;
         std::vector<unsigned int> ship_counts;
-	std::string role;
-	role.append(report.c_str() + ovector[4], ovector[5] - ovector[4]);
+        std::string role;
+        role.append(report.c_str() + ovector[4], ovector[5] - ovector[4]);
 
         Player * player = (Player *)&Player::GetPlayer(
 	      std::string().append(report.c_str() + ovector[6], ovector[7] - ovector[6]),  /* name */
@@ -292,7 +293,63 @@ const ReportData& LanguageTemplate::Parse(const std::string& report) throw(Excep
     m_result.moonchance = 0;
   }
 
+  CalculateLosses();
+
   return m_result;
+}
+
+void LanguageTemplate::CalculateLosses()
+{
+  for (std::vector<Player *>::const_iterator i = m_result.players.begin(); i != m_result.players.end(); i++)
+  {
+    Player *player = *i;
+    Costs losses = { 0, 0, 0 };
+    Costs value = { 0, 0, 0 };
+
+    if (player->GetShips(0).begin() != player->GetShips(0).end())
+    {
+      for (std::map<const std::string, Ship>::const_reverse_iterator s = ShipFactory::getInstance()->GetShips().rbegin();
+           s != ShipFactory::getInstance()->GetShips().rend();
+           s++)
+      {
+        try
+        {
+          unsigned int initial = player->GetShipCount((*s).first, 0);
+          unsigned int lost;
+
+          if (m_result.rounds > 0)
+          {
+            try
+            {
+              lost = initial - player->GetShipCount((*s).first, 1);
+            }
+            catch (Exception&)
+            {
+              lost = initial;
+            }
+          }
+          else
+          {
+            lost = 0;
+          }
+
+          /* Calculamos el valor de las flotas */
+          value.metal += initial * (*s).second.metal;
+          value.crystal += initial * (*s).second.crystal;
+          value.deuterium += initial * (*s).second.deuterium;
+
+          /* Calculamos las pérdidas */
+          losses.metal += lost * (*s).second.metal;
+          losses.crystal += lost * (*s).second.crystal;
+          losses.deuterium += lost * (*s).second.deuterium;
+        }
+        catch (Exception&) { }
+      }
+    }
+
+    player->SetLosses(losses);
+    player->SetValue(value);
+  }
 }
 
 LanguageTemplate::~LanguageTemplate()

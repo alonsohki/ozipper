@@ -49,7 +49,8 @@ Main = function()
 
   function MakePoststr()
   {
-    poststr = 'lang=' + $('selectedlang').value;
+    poststr =  'lang=' + $('selectedlang').value;
+    poststr += '&reportinfo=1&distributeinfo=1';
 
     switch ($('show').value)
     {

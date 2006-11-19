@@ -2,11 +2,9 @@
   <xsl:output method="text" encoding="UTF-8" />
 
 <xsl:template match="/">
-  <xml>
-    <report>
-      <xsl:apply-templates />
-     </report>
-  </xml>
+  <report>
+    <xsl:apply-templates />
+   </report>
 </xsl:template>
 
 <xsl:template match="xml/date">

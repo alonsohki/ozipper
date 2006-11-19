@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include "exception.h"
+#include "ship.h"
 
 class Player
 {
@@ -17,6 +18,11 @@ public:
   int GetShield() const;
   int GetArmour() const;
   const std::map<const std::string, unsigned int>& GetShips(int round);
+  
+  const Costs& GetLosses();
+  void SetLosses(const Costs& losses);
+  const Costs& GetValue();
+  void SetValue(const Costs& losses);
 
   void CreateShip(const std::string& name, unsigned int count, int round);
   unsigned int GetShipCount(const std::string& name, int round) throw(Exception);
@@ -37,6 +43,10 @@ private:
   static std::map< const std::string, std::map<const std::string, Player> > players;
   std::string m_name;
   std::string m_coords;
+  
+  Costs losses;
+  Costs value;
+
   int m_weapons;
   int m_shield;
   int m_armour;

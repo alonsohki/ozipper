@@ -17,69 +17,141 @@ class Ozipper
 public:
   static int main(int argc, char *argv[], const char *env[])
   {
+    xmlDoc * output = xmlNewDoc((const xmlChar *)"1.0");
+    xmlNode * rootNode = xmlNewNode(0, (const xmlChar *)"xml");
+    int xmlLength;
+    xmlChar *xmlDocument;
+    
     chdir("../..");
-    std::ostringstream output;
+    xmlDocSetRootElement(output, rootNode);
+
+    std::cout << "Content-type: text/xml; charset=UTF-8\r\n\r\n";
 
     try
     {
-      std::ostringstream xml;
-
       Http http(env);
-
-      output << "Content-type: text/xml; charset=UTF-8\r\n\r\n";
 
       if (http.POST("report") == "" || http.POST("lang") == "")
       {
-        Error(output, "Empty report or lang variables");
+        Error(rootNode, "Empty report or lang variables");
       }
       else if (http.POST("template") == "")
       {
-        Error(output, "Unable to find the required template");
+        Error(rootNode, "Unable to find the required template");
+      }
+      else if (http.POST("reportinfo") == "" && http.POST("distributeinfo") == "")
+      {
+        Error(rootNode, "No information required");
       }
       else
       {
         LanguageTemplate tpl(http.POST("lang"));
         const ReportData &rdata = tpl.Parse(http.POST("report"));
-        int xmlLength;
-        xmlChar *xmlDocument;
         
-        CreateXML(rdata, xml, http);
-        xmlDoc * tmpxml = XSLParse(xml.str().c_str(), "standard");
-        xmlDoc * res = XSLDecorate(tmpxml, http.POST("template"));
-        xmlDocDumpMemory(res, &xmlDocument, &xmlLength);
+        if (http.POST("reportinfo") == "1")
+        {
+          std::ostringstream xml;
+          
+          CreateXML(rdata, xml, http);
+          xmlDoc * tmpxml = XSLParse(xml.str().c_str(), "standard");
+          xmlDoc * res = XSLDecorate(tmpxml, http.POST("template"));
 
-        output << (char *)xmlDocument;
+          xmlAddChild(rootNode, xmlDocGetRootElement(res));
 
-        xmlFree(xmlDocument);
-        xmlFreeDoc(tmpxml);
-        xmlFreeDoc(res);
+          xmlFreeDoc(tmpxml);
+        }
+        
+        if (http.POST("distributeinfo") == "1")
+        {
+          std::ostringstream xml;
+
+          CreateDistributeXML(rdata, xml);
+          xmlDoc * res = xmlParseDoc((const xmlChar *)xml.str().c_str());
+
+          xmlAddChild(rootNode, xmlDocGetRootElement(res));
+        }
       }
     }
     catch (Exception &e)
     {
-//      Error(output, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
-      Error(output, "Invalid combat report format");
+      Error(rootNode, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
+      Error(rootNode, "Invalid combat report format");
     }
 
-    std::cout << output.str();
+    xmlDocDumpMemoryEnc(output, &xmlDocument, &xmlLength, "UTF-8");
+    printf((const char *)xmlDocument);
+    xmlFree(xmlDocument);
 
     Cleanup();
 
     return 0;
   }
 
-  static void Error(std::ostringstream& output, const char *errstr, ...)
+  static void CreateDistributeXML(const ReportData& rdata, std::ostringstream& output)
+  {
+    unsigned int count[2] = { 0, 0 };
+
+    output << "<distribute>\n";
+    
+    for (std::vector<Player *>::const_iterator i = rdata.players.begin(); i != rdata.players.end(); i++)
+    {
+      Player *player = *i;
+      Costs losses;
+      Costs value;
+
+      if (player->GetRole() == "attacker")
+      {
+        count[0]++;
+      }
+      else if (player->GetRole() == "defender")
+      {
+        count[1]++;
+      }
+      losses = player->GetLosses();
+      value = player->GetValue();
+
+      output << "  <player>\n";
+      output << "    <name>" << player->GetName() << "</name>\n";
+      output << "    <role>" << player->GetRole() << "</role>\n";
+      output << "    <losses>\n";
+      output << "      <metal>" << losses.metal << "</metal>\n";
+      output << "      <crystal>" << losses.crystal << "</crystal>\n";
+      output << "      <deuterium>" << losses.deuterium << "</deuterium>\n";
+      output << "    </losses>\n";
+      output << "    <value>\n";
+      output << "      <metal>" << value.metal << "</metal>\n";
+      output << "      <crystal>" << value.crystal << "</crystal>\n";
+      output << "      <deuterium>" << value.deuterium << "</deuterium>\n";
+      output << "    </value>\n";
+      output << "  </player>\n";
+    }
+  
+    output << "  <count>\n";
+    output << "    <attacker>" << count[0] << "</attacker>\n";
+    output << "    <defender>" << count[1] << "</defender>\n";
+    output << "  </count>\n";
+    output << "  <debris>\n";
+    output << "    <metal>" << rdata.debris.metal << "</metal>\n";
+    output << "    <crystal>" << rdata.debris.crystal << "</crystal>\n";
+    output << "  </debris>\n";
+    output << "</distribute>\n";
+  }
+
+  static void Error(xmlNode *rootNode, const char *errstr, ...)
   {
     va_list vl;
     char buffer[256];
+    xmlNode * errorNode = xmlNewNode(0, (const xmlChar *)"error");
+    xmlNode * textNode;
 
     va_start(vl, errstr);
     vsnprintf(buffer, 256, errstr, vl);
     va_end(vl);
-    output << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    output << "<xml>\n";
-    output << "  <error>" << buffer << "</error>\n";
-    output << "</xml>\n";
+
+    textNode = xmlNewText((const xmlChar *)buffer);
+    xmlAddChild(errorNode, textNode);
+
+    xmlAddChild(rootNode, errorNode);
   }
 
   static void Cleanup()
@@ -131,7 +203,7 @@ public:
            "      <crystal>0</crystal>\n"
            "      <deuterium>0</deuterium>\n"
            "    </nullresources>\n"
-     "  </extra>\n\n";
+           "  </extra>\n\n";
     
     /* Escribimos el node-set de traducción */
     if (http.POST("outputlang") != "")
@@ -183,9 +255,7 @@ public:
     for (std::vector<Player *>::const_iterator i = res.players.begin(); i != res.players.end(); i++)
     {
       Player *player = *i;
-      unsigned int metal = 0;
-      unsigned int crystal = 0;
-      unsigned int deuterium = 0;
+      Costs losses;
       
       xml << "    <player>\n";
       xml << "      <name>" << player->GetName() << "</name>\n";
@@ -240,10 +310,8 @@ public:
             {
               lost = 0;
             }
-    
-            metal += lost * (*s).second.metal;
-            crystal += lost * (*s).second.crystal;
-            deuterium += lost * (*s).second.deuterium;
+
+            losses = player->GetLosses();
     
             xml << "        <ship>\n";
             xml << "          <name>" << (*s).second.name << "</name>\n";
@@ -257,9 +325,9 @@ public:
       xml << "      </fleet>\n";
 
       xml << "      <losses>\n";
-      xml << "        <metal>" << metal << "</metal>\n";
-      xml << "        <crystal>" << crystal << "</crystal>\n";
-      xml << "        <deuterium>" << deuterium << "</deuterium>\n";
+      xml << "        <metal>" << losses.metal << "</metal>\n";
+      xml << "        <crystal>" << losses.crystal << "</crystal>\n";
+      xml << "        <deuterium>" << losses.deuterium << "</deuterium>\n";
       xml << "      </losses>\n";
       xml << "    </player>\n\n";
     }

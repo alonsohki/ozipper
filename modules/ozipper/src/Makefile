@@ -36,7 +36,7 @@ ${PROGRAM}: ${OBJS}
 	@echo ${CXX} ${LFLAGS} ${OBJS} -o $@
 	@${CXX} ${LFLAGS} ${OBJS} -o $@
 
-ship.o:		ship.cpp		../include/ship.h
+ship.o:		ship.cpp		../include/ship.h	../include/ship.h
 shipfactory.o:	shipfactory.cpp		../include/ship.h ../include/shipfactory.h
 player.o:	player.cpp		../include/player.h ../include/exception.h
 languagetpl.o:	languagetpl.cpp		../include/languagetpl.h ../include/shipfactory.h ../include/exception.h ../include/player.h

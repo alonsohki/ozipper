@@ -47,6 +47,7 @@ private:
   void ReadRegex(const std::string& path, std::string& dest, pcre **re) throw(Exception);
   inline int ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, const char *, bool match_error = true) throw (Exception);
   void InitRegex() throw(Exception);
+  void CalculateLosses();
 
   ReportData m_result;
   pcre * m_re_date;

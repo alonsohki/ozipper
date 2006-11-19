@@ -1,6 +1,6 @@
 #include "ship.h"
 
-Ship::Ship(const std::string& p_name, int p_metal, int p_crystal, int p_deuterium) :
+Ship::Ship(const std::string& p_name, unsigned int p_metal, unsigned int p_crystal, unsigned int p_deuterium) :
       name(p_name), metal(p_metal), crystal(p_crystal), deuterium(p_deuterium)
 {
 }

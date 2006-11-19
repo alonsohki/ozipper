@@ -3,6 +3,7 @@
 
 #include "exception.h"
 #include "player.h"
+#include "ship.h"
 
 std::map< const std::string, std::map<const std::string, Player> > Player::players;
 
@@ -122,3 +123,24 @@ const std::map<const std::string, unsigned int>& Player::GetShips(int round)
 {
   return m_ships[round];
 }
+
+void Player::SetLosses(const Costs& losses_)
+{
+  losses = losses_;
+}
+
+const Costs& Player::GetLosses()
+{
+  return losses;
+}
+
+void Player::SetValue(const Costs& value_)
+{
+  value = value_;
+}
+
+const Costs& Player::GetValue()
+{
+  return value;
+}
+
