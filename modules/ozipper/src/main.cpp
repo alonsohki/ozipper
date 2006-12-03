@@ -1,4 +1,5 @@
 #include "exception.h"
+#include "intl.h"
 #include "languagetpl.h"
 #include "shipfactory.h"
 #include "http.h"
@@ -31,17 +32,20 @@ public:
     {
       Http http(env);
 
+      Intl::InitLocale(http.POST("lang").c_str());
+
       if (http.POST("report") == "" || http.POST("lang") == "")
       {
-        Error(rootNode, "Empty report or lang variables");
+        Error(rootNode, Intl::_(EMPTY_REPORT_OR_LANG_VARS));
       }
+
       else if (http.POST("template") == "")
       {
-        Error(rootNode, "Unable to find the required template");
+        Error(rootNode, Intl::_(UNABLE_TO_FIND_REQUIRED_TEMPLATE));
       }
       else if (http.POST("reportinfo") == "" && http.POST("distributeinfo") == "")
       {
-        Error(rootNode, "No information required");
+        Error(rootNode, Intl::_(NO_INFORMATION_REQUIRED));
       }
       else
       {
@@ -74,8 +78,8 @@ public:
     }
     catch (Exception &e)
     {
-      Error(rootNode, "Exception caught at %s(%d): %s\n", e.GetFile(), e.GetLine(), e.GetErr());
-      Error(rootNode, "Invalid combat report format");
+//      Error(rootNode, "Exception caught at %s(%d): [%d] %s\n", e.GetFile(), e.GetLine(), e.GetErrID(), e.GetErr());
+      Error(rootNode, Intl::_((StrID)e.GetErrID()));
     }
 
     xmlDocDumpMemoryEnc(output, &xmlDocument, &xmlLength, "UTF-8");
@@ -220,7 +224,7 @@ public:
     translation.open(path.c_str());
     if (!translation.is_open())
     {
-      EXCEPTION("Unable to open translation.xml");
+      EXCEPTION(COULDNT_OPEN_TRANSLATION, "Unable to open translation.xml");
     }
     translation.read(tmp, state.st_size);
     tmp[state.st_size] = '\0';

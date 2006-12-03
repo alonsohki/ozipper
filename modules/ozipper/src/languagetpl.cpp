@@ -7,6 +7,7 @@
 #include "languagetpl.h"
 #include "shipfactory.h"
 #include "ship.h"
+#include "intl.h"
 
 int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset, int *vector, size_t vsize, const char *regexName, bool match_error)
                                 throw(Exception)
@@ -27,15 +28,15 @@ int LanguageTemplate::ExecRegex(pcre *re, const std::string& subject, int offset
     switch (rc)
     {
       case PCRE_ERROR_NOMATCH:
-	if (match_error)
-	{
-	  EXCEPTION("pcre_exec error: String didn't match with %s", regexName);
-	}
-	break;
+        if (match_error)
+        {
+          EXCEPTION(UNKNOWN_REPORT_FORMAT, "pcre_exec error: String didn't match with %s", regexName);
+        }
+        break;
 
       default:
-	EXCEPTION("pcre_exec error: Error while matching: %d\n", rc);
-	break;
+        EXCEPTION(INTERNAL_ERROR, "pcre_exec error: Error while matching: %d\n", rc);
+        break;
     }
   }
 
@@ -399,7 +400,7 @@ void LanguageTemplate::InitRoles()
   file.open(path.c_str());
   if (!file.good())
   {
-    EXCEPTION("Can't open file %s", path.c_str());
+    EXCEPTION(COULDNT_INIT_ROLES, "Can't open file %s", path.c_str());
   }
 
   file.getline(line, 512);
@@ -427,7 +428,7 @@ void LanguageTemplate::InitShips()
   file.open(path.c_str());
   if (!file.good())
   {
-    EXCEPTION("Can't open file %s", path.c_str());
+    EXCEPTION(COULDNT_INIT_SHIPS, "Can't open file %s", path.c_str());
   }
 
   while (!file.eof())
@@ -470,7 +471,7 @@ void LanguageTemplate::ReadRegex(const std::string& path, std::string& dest, pcr
   file.open(path.c_str());
   if (!file.is_open())
   {
-    EXCEPTION("Can't open file %s", path.c_str());
+    EXCEPTION(COULDNT_INIT_REGEXP, "Can't open file %s", path.c_str());
   }
 
   tmp = new char[estado.st_size + 1];
@@ -489,7 +490,7 @@ void LanguageTemplate::ReadRegex(const std::string& path, std::string& dest, pcr
 
   if (!*re)
   {
-    EXCEPTION("pcre_compile failed (offset: %d), %s\n", erroffset, error);
+    EXCEPTION(INTERNAL_ERROR, "pcre_compile failed (offset: %d), %s\n", erroffset, error);
   }
 }
 

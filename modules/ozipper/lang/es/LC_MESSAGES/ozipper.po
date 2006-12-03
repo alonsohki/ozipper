@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-12-03 01:47+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/intl.cpp:28
+msgid "Empty report or lang variables"
+msgstr "Peticion http invalida"
+
+#: ../src/intl.cpp:29
+msgid "Unable to find required template"
+msgstr "No se encontro el estilo solicitado"
+
+#: ../src/intl.cpp:30
+msgid "No information required"
+msgstr "No se ha solicitado ningun tipo de informacion"
+
+#: ../src/intl.cpp:31
+msgid "Unknown report format"
+msgstr "Formato de informe de batalla invalido"
+
+#: ../src/intl.cpp:32
+msgid "Internal error"
+msgstr "Error interno. Por favor, contacte con el webmaster."
+
+#: ../src/intl.cpp:33
+msgid "Couldn't init roles"
+msgstr "Error interno. Por favor, contacte con el webmaster."
+
+#: ../src/intl.cpp:34
+msgid "Couldn't init ships"
+msgstr "Error interno. Por favor, contacte con el webmaster."
+
+#: ../src/intl.cpp:35
+msgid "Couldn't init regular expressions"
+msgstr "Error interno. Por favor, contacte con el webmaster."
+
+#: ../src/intl.cpp:36
+msgid "Couldn't open translation"
+msgstr "Error interno. Por favor, contacte con el webmaster."
+
+#: ../src/intl.cpp:37
+msgid "Player not found"
+msgstr "Formato de informe de batalla invalido"
+
+#: ../src/intl.cpp:38
+msgid "Ship not found"
+msgstr "Formato de informe de batalla invalido"

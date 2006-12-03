@@ -1,22 +1,26 @@
-include ../Makefile.inc
-
-DIRS=`ls . --color=no | grep -v CVS | grep -v Makefile`
-INSTALL=`which install`
+DIRS=es en de
 
 all: build
 
 build:
+	@for i in ${DIRS} ; do \
+		make -C $$i $@ ; \
+	done
 
 clean:
+	@for i in ${DIRS} ; do \
+		make -C $$i $@ ; \
+	done
 
 install:
 	@for i in ${DIRS} ; do \
-		echo ${INSTALL} --directory -o ${OWNER} -g ${GROUP} --mode 0750 $$i ${TARGET_DIR}/lang/$$i ; \
-		${INSTALL} -o ${OWNER} -g ${GROUP} --directory --mode 0750 $$i ${TARGET_DIR}/lang/$$i ; \
+		make -C $$i $@ ; \
 	done
+
+gettext:
+	xgettext -k_ --c++ ../src/intl.cpp -o ozipper.po
 	@for i in ${DIRS} ; do \
-		for x in `ls $$i --color=no | grep -v CVS` ; do \
-			echo ${INSTALL} -o ${OWNER} -g ${GROUP} --mode 0440 $$i/$$x ${TARGET_DIR}/lang/$$i/ ; \
-			${INSTALL} -o ${OWNER} -g ${GROUP} --mode 0440 $$i/$$x ${TARGET_DIR}/lang/$$i/ ; \
-		done ; \
+		echo cp ozipper.po $$i/LC_MESSAGES/ozipper.po ; \
+		cp ozipper.po $$i/LC_MESSAGES/ozipper.po ; \
 	done
+	rm -f ozipper.po

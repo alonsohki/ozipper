@@ -4,6 +4,7 @@
 #include "exception.h"
 #include "player.h"
 #include "ship.h"
+#include "intl.h"
 
 std::map< const std::string, std::map<const std::string, Player> > Player::players;
 
@@ -34,7 +35,7 @@ const Player& Player::GetPlayer(const std::string& name,
   {
     if (!create)
     {
-      EXCEPTION("Player %s not found", name.c_str());
+      EXCEPTION(PLAYER_NOT_FOUND, "Player %s not found", name.c_str());
     }
     else
     {
@@ -89,7 +90,7 @@ unsigned int Player::GetShipCount(const std::string& name, int round) throw(Exce
   i = m_ships[round].find(name);
   if (i == m_ships[round].end())
   {
-    EXCEPTION("Ship %s not found", name.c_str());
+    EXCEPTION(SHIP_NOT_FOUND, "Ship %s not found", name.c_str());
   }
 
   return (*i).second;

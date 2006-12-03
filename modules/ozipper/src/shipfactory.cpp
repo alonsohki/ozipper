@@ -2,6 +2,7 @@
 #include <map>
 #include "exception.h"
 #include "shipfactory.h"
+#include "intl.h"
 
 ShipFactory * ShipFactory::getInstance()
 {
@@ -32,7 +33,7 @@ const Ship& ShipFactory::GetShip(const std::string& alias) throw(Exception)
       return (*s).second;
     }
   }
-  EXCEPTION("Ship \"%s\" not found", alias.c_str());
+  EXCEPTION(SHIP_NOT_FOUND, "Ship \"%s\" not found", alias.c_str());
 }
 
 const std::map<const std::string, Ship, ShipFactoryOrder>& ShipFactory::GetShips()

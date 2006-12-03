@@ -12,7 +12,7 @@ CXXFLAGS=${CFLAGS}
 
 all: build
 
-OBJS=ship.o shipfactory.o player.o languagetpl.o http.o main.o
+OBJS=ship.o shipfactory.o player.o languagetpl.o http.o intl.o main.o
 
 clean:
 	@echo ${RM} -f *.o
@@ -36,9 +36,10 @@ ${PROGRAM}: ${OBJS}
 	@echo ${CXX} ${LFLAGS} ${OBJS} -o $@
 	@${CXX} ${LFLAGS} ${OBJS} -o $@
 
-ship.o:		ship.cpp		../include/ship.h	../include/ship.h
-shipfactory.o:	shipfactory.cpp		../include/ship.h ../include/shipfactory.h
-player.o:	player.cpp		../include/player.h ../include/exception.h
-languagetpl.o:	languagetpl.cpp		../include/languagetpl.h ../include/shipfactory.h ../include/exception.h ../include/player.h
-http.o:		http.cpp		../include/http.h
-main.o:		main.cpp		../include/languagetpl.h ../include/exception.h ../include/http.h ../include/shipfactory.h
+ship.o:         ship.cpp          ../include/ship.h ../include/ship.h ../include/intl.h
+shipfactory.o:  shipfactory.cpp   ../include/ship.h ../include/shipfactory.h ../include/intl.h
+player.o:       player.cpp        ../include/player.h ../include/exception.h ../include/intl.h
+languagetpl.o:  languagetpl.cpp   ../include/languagetpl.h ../include/shipfactory.h ../include/exception.h ../include/player.h ../include/intl.h
+http.o:         http.cpp          ../include/http.h
+main.o:         main.cpp          ../include/languagetpl.h ../include/exception.h ../include/http.h ../include/shipfactory.h ../include/intl.h
+intl.o:         intl.cpp          ../include/intl.h
