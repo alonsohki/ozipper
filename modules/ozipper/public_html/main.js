@@ -86,6 +86,9 @@ Main = function()
 
   this.ReadyRequest = function(data)
   {
+    var dest = $('compactado');
+    var center = false;
+    
     style.Working(false);
     report = data[1].documentElement;
 
@@ -101,14 +104,22 @@ Main = function()
       return false;
     }
 
-    text = textNode[0].firstChild.data;
-
+    dest.value = '';
     if (style.GetTemplate() != 'plain' && $('align').value == 'center')
     {
-      text = '[center]' + text + '[/center]';
+      center = true;
+      dest.value = '[center]';
     }
 
-    $('compactado').value = text;
+    for (var i = 0; i < textNode[0].childNodes.length; i++)
+    {
+      dest.value += textNode[0].childNodes.item(i).data;
+    }
+
+    if (center)
+    {
+      dest.value += '[/center]';
+    }
 
     style.Update();
 

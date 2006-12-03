@@ -22,6 +22,7 @@ public:
     xmlNode * rootNode = xmlNewNode(0, (const xmlChar *)"xml");
     int xmlLength;
     xmlChar *xmlDocument;
+    const char *p;
     
     chdir("../..");
     xmlDocSetRootElement(output, rootNode);
