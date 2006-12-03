@@ -44,7 +44,6 @@
 
     <title><?=T('OGame zipper')?></title>
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="text/javascript" src="node.js"></script>
     <script type="text/javascript" src="htmlspecialchars.js"></script>
     <script type="text/javascript" src="wysiwyg.js"></script>
     <script type="text/javascript" src="ajax.js"></script>
