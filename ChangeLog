@@ -1,134 +1,134 @@
-* 03/12/2006 - ryden@bhats.org
+* 03/12/2006 - rydencillo@gmail.com
   ----------------------------
   Solucionado el bug del límite de 4kb de las variables javascript.
 
-* 03/12/2006 - ryden@bhats.org
+* 03/12/2006 - rydencillo@gmail.com
   ----------------------------
   Implementada internacionalización.
 
-* 19/11/2006 - ryden@bhats.org
+* 19/11/2006 - rydencillo@gmail.com
   ----------------------------
   Solucionado el bug de sin naves ni defensas.
 
-* 19/11/2006 - ryden@bhats.org
+* 19/11/2006 - rydencillo@gmail.com
   ----------------------------
   Preparado ozipper para servir información para el repartidor.
 
-* 19/11/2006 - ryden@bhats.org
+* 19/11/2006 - rydencillo@gmail.com
   ----------------------------
   Eliminado el viejo sistema de errores AJAX.
 
-* 19/11/2006 - ryden@bhats.org
+* 19/11/2006 - rydencillo@gmail.com
   ----------------------------
   Implementada comunicación AJAX XML.
 
-* 17/11/2006 - ryden@bhats.org
+* 17/11/2006 - rydencillo@gmail.com
   ----------------------------
   Implementada comunicación asíncrona AJAX.
 
-* 17/11/2006 - ryden@bhats.org
+* 17/11/2006 - rydencillo@gmail.com
   ----------------------------
   Escrito código específico para InterHell Explorer.
 
-* 17/11/2006 - ryden@bhats.org
+* 17/11/2006 - rydencillo@gmail.com
   ----------------------------
   Reescrito el código fuente JavaScript orientándolo
   a objetos.
 
-* 17/11/2006 - ryden@bhats.org
+* 17/11/2006 - rydencillo@gmail.com
   ----------------------------
   Invertido el órden de este fichero.
   Varios arreglos en los Makefile.
 
-* 17/11/2006 - ryden@bhats.org
+* 17/11/2006 - rydencillo@gmail.com
   ----------------------------
   Agregado el soporte para htmlspecialchars.js
 
-* 15/11/2006 - ryden@bhats.org
+* 15/11/2006 - rydencillo@gmail.com
   ----------------------------
   Creado soporte para foros VBulletin.
 
-* 14/11/2006 - ryden@bhats.org
+* 14/11/2006 - rydencillo@gmail.com
   ----------------------------
   Soporte de idiomas en adsense.
 
-* 14/11/2006 - ryden@bhats.org
+* 14/11/2006 - rydencillo@gmail.com
   ----------------------------
   Creado soporte para foros SMF.
 
-* 04/09/2006 - ryden@bhats.org
+* 04/09/2006 - rydencillo@gmail.com
   ----------------------------
   Solucionado el bug de las flotas múltiples de un jugador en SAC.
 
-* 04/09/2006 - ryden@bhats.org
+* 04/09/2006 - rydencillo@gmail.com
   ----------------------------
   Añadido el idioma Alemán.
 
-* 27/08/2006 - ryden@bhats.org
+* 27/08/2006 - rydencillo@gmail.com
   ----------------------------
   Arreglados fallos que no permitian el funcionamiento correcto con
   mod_security.
 
-* 18/08/2006 - ryden@bhats.org
+* 18/08/2006 - rydencillo@gmail.com
   ----------------------------
   Implementados cambios en plantillas y alineación.
 
-* 18/08/2006 - ryden@bhats.org
+* 18/08/2006 - rydencillo@gmail.com
   ----------------------------
   Modificados varios aspectos de la web.
 
-* 18/08/2006 - ryden@bhats.org
+* 18/08/2006 - rydencillo@gmail.com
   ----------------------------
   Creada la sección de contacto.
 
-* 16/08/2006 - ryden@bhats.org
+* 16/08/2006 - rydencillo@gmail.com
   ----------------------------
   Finalizado el sistema de decoraciones.
 
-* 14/08/2006 - ryden@bhats.org
+* 14/08/2006 - rydencillo@gmail.com
   ----------------------------
   Adaptado el código fuente web.
 
-* 14/08/2006 - ryden@bhats.org
+* 14/08/2006 - rydencillo@gmail.com
   ----------------------------
   Implementadas las plantillas de forma y decoración.
 
-* 14/08/2006 - ryden@bhats.org
+* 14/08/2006 - rydencillo@gmail.com
   ----------------------------
   Implementados los parsers XML y XSL.
 
-* 14/08/2006 - ryden@bhats.org
+* 14/08/2006 - rydencillo@gmail.com
   ----------------------------
   Implementado el generador XML
 
-* 09/08/2006 - ryden@bhats.org
+* 09/08/2006 - rydencillo@gmail.com
   ----------------------------
   Bugfix en exception.h
 
-* 08/08/2006 - ryden@bhats.org
+* 08/08/2006 - rydencillo@gmail.com
   ----------------------------
   Creada la clase Http
 
-* 08/08/2006 - ryden@bhats.org
+* 08/08/2006 - rydencillo@gmail.com
   ----------------------------
   Agregado el idioma castellano
 
-* 08/08/2006 - ryden@bhats.org
+* 08/08/2006 - rydencillo@gmail.com
   ----------------------------
   Finalizado el parser de informes
 
-* 06/08/2006 - ryden@bhats.org
+* 06/08/2006 - rydencillo@gmail.com
   ----------------------------
   Implementados métodos de carga de idioma
 
-* 06/08/2006 - ryden@bhats.org
+* 06/08/2006 - rydencillo@gmail.com
   ----------------------------
   Preparada la estructura de los idiomas
 
-* 06/08/2006 - ryden@bhats.org
+* 06/08/2006 - rydencillo@gmail.com
   ----------------------------
   Preparado el sistema base de naves
 
-* 06/08/2006 - ryden@bhats.org
+* 06/08/2006 - rydencillo@gmail.com
   ----------------------------
   cvs import
